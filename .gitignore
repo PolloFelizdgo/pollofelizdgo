@@ -43,3 +43,13 @@ next-env.d.ts
 # Data files
 /data/*.json
 !data/.gitkeep
+
+# Large images (use external storage or optimize first)
+/public/imagenes/*.png
+/public/imagenes/*.jpg
+!public/imagenes/qr-encuesta.jpg
+/public/imagenes/platillos/*.jpg
+/public/imagenes/platillos/*.png
+!public/imagenes/platillos/README.md
+/public/slider/*.jpg
+/public/slider/*.png
