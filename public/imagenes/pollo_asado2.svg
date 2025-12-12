@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400">
+  <rect width="100%" height="100%" fill="#fff8f0"/>
+  <g transform="translate(40,20)">
+    <circle cx="220" cy="160" r="120" fill="#f4c539" />
+    <ellipse cx="200" cy="150" rx="12" ry="16" fill="#201a17" />
+    <ellipse cx="240" cy="150" rx="12" ry="16" fill="#201a17" />
+    <path d="M190 200 q30 25 60 0" stroke="#201a17" stroke-width="6" stroke-linecap="round" fill="none" />
+    <text x="40" y="320" font-family="Arial, Helvetica, sans-serif" font-size="28" fill="#9a0404">Pollo Asado</text>
+  </g>
+</svg>

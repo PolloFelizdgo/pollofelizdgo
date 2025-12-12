@@ -1,0 +1,363 @@
+@import "tailwindcss";
+
+/* Asegurar que el banner de cookies esté siempre visible */
+#cookie-banner-overlay,
+#cookie-banner {
+  z-index: 999999 !important;
+  pointer-events: auto !important;
+}
+
+/* Prevenir que otros elementos tengan z-index muy alto */
+body > *:not(#cookie-banner-overlay):not(#cookie-banner) {
+  position: relative;
+}
+
+/*
+  Font-face declarations.
+  Place your font files under: /public/fonts/
+  Expected filenames (adjust or add more weights as needed):
+    - /public/fonts/NEILVARD-One-Semibold.woff2
+    - /public/fonts/Brignell-Square-Bold.woff2
+    - /public/fonts/Grignell-Square-Medium.woff2
+  If you don't have the files yet, the CSS will gracefully fall back to system fonts.
+*/
+@font-face {
+  font-family: 'NEILVARD One';
+  src: url('/Neilvard Semibold One Regular/Neilvard Semibold One Regular.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Brignell Square';
+  src: url('/fonts/Brignell-Square-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Grignell Square';
+  src: url('/fonts/Grignell-Square-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* Typography variables: update if you change font filenames */
+  --font-title: 'NEILVARD One', 'NEILVARD', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-subtitle: 'Brignell Square', 'Brignell', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-body: 'Grignell Square', 'Grignell', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  /* Brand palette (provided) */
+  /* Primary colors requested by user */
+  --primary-red: #ff0000; /* bright red */
+  --primary-gold: #ffbc00; /* warm gold */
+  /* Map legacy names used across the codebase to the new palette */
+  --gold: var(--primary-gold);
+  --dark: #000000; /* secondary: black */
+  --orange: #ec7916;
+  --red: var(--primary-red);
+  --muted: #a29292;
+  --muted2: #747474;
+  --deepred: #9a0404;
+  --accent: var(--primary-red);
+  /* helper rgba vars for overlays and softer accents */
+  --gold-rgba: rgba(255,188,0,0.95);
+  --gold-alpha: rgba(255,188,0,0.6);
+  --dark-alpha: rgba(0,0,0,0.6);
+  --overlay: rgba(0,0,0,0.25);
+}
+
+/* Inline theme variables moved into :root for compatibility */
+:root {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial);
+  --font-mono: var(--font-geist-mono, ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', 'Courier New', monospace);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #000000; /* keep dark mode aligned to secondary black */
+    --foreground: #ffffff; /* white text on dark */
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  /* Use the requested body font family */
+  font-family: var(--font-body);
+}
+
+/* Make the page use full width and avoid horizontal scrolling */
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* prevent accidental horizontal scroll */
+}
+
+/* Global typographic rules */
+/* Titles: NEILVARD One, semibold */
+h1, h2, h3, h4, h5, .title {
+  font-family: var(--font-title);
+  font-weight: 600; /* semi-bold */
+  letter-spacing: -0.01em;
+}
+
+/* Subtitles: Brignell Square bold */
+.subtitle, .lead, h6 {
+  font-family: var(--font-subtitle);
+  font-weight: 700; /* bold */
+}
+
+/* Body copy: Grignell Square medium */
+p, span, li, a, input, textarea, button {
+  font-family: var(--font-body);
+  font-weight: 500; /* medium */
+}
+
+/*
+  Organic texture helpers based on the brand guide.
+  These use layered radial-gradients to approximate the organic blob textures
+  shown in the attachment (red and gold variants). They are lightweight and
+  scale with the element box. Apply with `.texture-red` or `.texture-gold`.
+*/
+.texture-red {
+  /* Do not override host background-color; this class provides the organic blob artwork only */
+  background-image:
+    radial-gradient(circle at 10% 20%, rgba(0,0,0,0.06) 6%, transparent 7%),
+    radial-gradient(circle at 30% 60%, rgba(0,0,0,0.06) 8%, transparent 9%),
+    radial-gradient(circle at 70% 15%, rgba(0,0,0,0.06) 10%, transparent 11%),
+    radial-gradient(circle at 85% 75%, rgba(0,0,0,0.06) 7%, transparent 8%),
+    radial-gradient(circle at 50% 45%, rgba(0,0,0,0.06) 12%, transparent 13%);
+  background-size: 120% 120%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.texture-gold {
+  background-color: #ffbc00;
+  background-image:
+    radial-gradient(circle at 12% 25%, rgba(255,255,255,0.92) 6%, transparent 7%),
+    radial-gradient(circle at 32% 62%, rgba(255,255,255,0.92) 8%, transparent 9%),
+    radial-gradient(circle at 68% 12%, rgba(255,255,255,0.92) 10%, transparent 11%),
+    radial-gradient(circle at 82% 72%, rgba(255,255,255,0.92) 7%, transparent 8%),
+    radial-gradient(circle at 52% 42%, rgba(255,255,255,0.92) 12%, transparent 13%);
+  background-size: 120% 120%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Utility: apply a subtle overlay for contrast tweaks */
+.texture-overlay {
+  background: linear-gradient(180deg, rgba(0,0,0,0.04), rgba(0,0,0,0.06));
+}
+
+/* Smooth theme transitions: transition background and color to soften toggles */
+html, body {
+  transition: background-color 280ms ease, color 280ms ease;
+}
+
+/* Use border-box sizing everywhere to avoid unexpected overflow */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/*
+  Leaflet overlay stacking adjustments
+  -----------------------------------
+  The site header (`Navbar`) uses `z-50` so Leaflet popups/controls (which default to
+  high z-index values like 1000) can appear above it. To ensure the map never
+  overlays the header, force Leaflet popups/controls/tooltip z-index to sit below
+  the header. Adjust these values if you change the header z-index.
+*/
+
+/* make map a normal stacking context */
+.leaflet-container {
+  position: relative;
+  z-index: 0;
+}
+
+/* keep popups, tooltips and controls under the header (header z-50) */
+.leaflet-container .leaflet-popup,
+.leaflet-container .leaflet-tooltip,
+.leaflet-container .leaflet-control {
+  z-index: 45 !important;
+}
+
+/* marker icons/shadows should not overlap the header either */
+.leaflet-container .leaflet-marker-icon,
+.leaflet-container .leaflet-marker-shadow {
+  z-index: 44 !important;
+}
+
+/* Badge hover / subtle glow effects for product badges and CTA */
+.badge-hover {
+  transition: box-shadow 180ms ease, transform 160ms ease, opacity 160ms ease;
+}
+.badge-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(252,59,4,0.12), 0 2px 6px rgba(32,26,23,0.06);
+  opacity: 0.98;
+}
+
+.cta-primary {
+  transition: transform 150ms ease, box-shadow 150ms ease;
+}
+.cta-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(244,197,57,0.12); }
+
+/* Animaciones personalizadas para la página renovada */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounce-slow {
+  0%, 100% {
+    transform: translateY(-5%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 188, 0, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(255, 188, 0, 0.8);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 1s ease-out;
+}
+
+.animate-slide-up {
+  animation: slide-up 1s ease-out 0.2s both;
+}
+
+.animate-bounce-slow {
+  animation: bounce-slow 3s infinite;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+/* Delay utilities para animaciones escalonadas */
+.delay-100 {
+  animation-delay: 100ms;
+}
+
+.delay-200 {
+  animation-delay: 200ms;
+}
+
+.delay-300 {
+  animation-delay: 300ms;
+}
+
+.delay-500 {
+  animation-delay: 500ms;
+}
+
+.delay-1000 {
+  animation-delay: 1000ms;
+}
+
+/* Efectos glassmorphism */
+.glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.glass-dark {
+  background: rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+/* Gradientes con los colores de la marca */
+.gradient-primary {
+  background: linear-gradient(135deg, #ff0000 0%, #ffbc00 100%);
+}
+
+.gradient-secondary {
+  background: linear-gradient(135deg, #ec7916 0%, #ff0000 100%);
+}
+
+.gradient-gold {
+  background: linear-gradient(135deg, #ffbc00 0%, #ec7916 100%);
+}
+
+.gradient-red-pulse {
+  background: linear-gradient(135deg, #9a0404 0%, #ff0000 50%, #ec7916 100%);
+  background-size: 200% 200%;
+  animation: gradient-shift 3s ease infinite;
+}
+
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Animación fade-in para el slider */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 1s ease-out forwards;
+}

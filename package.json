@@ -1,0 +1,42 @@
+{
+  "name": "pollofelizdgo",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "generate:images": "node scripts/generate-images.js",
+    "generate:thumbnails": "node scripts/generate-sucursales-thumbnails.js",
+    "start": "next start",
+    "lint": "eslint",
+    "type-check": "tsc --noEmit",
+    "test:apis": "node scripts/test-apis.js"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^7.1.0",
+    "@fortawesome/free-brands-svg-icons": "^7.1.0",
+    "@fortawesome/react-fontawesome": "^3.1.0",
+    "@heroui/react": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "framer-motion": "^12.23.24",
+    "leaflet": "^1.9.4",
+    "mongodb": "^7.0.0",
+    "next": "16.0.2-canary.1",
+    "nodemailer": "^6.10.1",
+    "postgres": "^3.4.7",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "sharp": "^0.34.5"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^18.3.27",
+    "@types/react-dom": "^18",
+    "baseline-browser-mapping": "^2.9.4",
+    "eslint": "^9",
+    "eslint-config-next": "16.0.0",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}

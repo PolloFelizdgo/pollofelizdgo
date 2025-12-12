@@ -1,0 +1,8 @@
+# Data Storage
+
+This directory stores JSON files with user submissions:
+- `contacts.json` - Contact form submissions
+- `vacantes.json` - Job application submissions  
+- `opinions.json` - User ratings and feedback
+
+Files are automatically created by the API routes when users submit forms.
