@@ -1,5 +1,5 @@
 "use client";
-import OptimizedImage from "./OptimizedImage";
+import CloudinaryImage from "./CloudinaryImage";
 
 interface PromoImageProps {
   src: string;
@@ -11,10 +11,10 @@ interface PromoImageProps {
 }
 
 /**
- * Componente mejorado usando OptimizedImage
- * - Reduce consumo de recursos hasta 80%
- * - Lazy loading automático
- * - Conversión a WebP
+ * Componente optimizado con Cloudinary
+ * - Imágenes desde CDN global
+ * - Conversión automática a WebP
+ * - Lazy loading y optimización
  */
 export default function PromoImage({ 
   src, 
@@ -26,12 +26,11 @@ export default function PromoImage({
 }: PromoImageProps) {
   return (
     <div className="relative w-full h-full hover:scale-105 transition-transform duration-300">
-      <OptimizedImage
+      <CloudinaryImage
         src={src}
         alt={alt}
         width={width}
         height={height}
-        quality={85}
         priority={priority}
         className="rounded-2xl shadow-2xl"
       />

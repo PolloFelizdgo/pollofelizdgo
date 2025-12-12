@@ -25,8 +25,8 @@ const slides: SlideData[] = [
       "Guarniciones frescas del día",
       "Tortillas hechas a mano"
     ],
-    image: "/imagenes/platillos/combinacion.jpg",
-    fallbackImage: "/imagenes/PLATILLO COMPLETO.png",
+    image: "pollo-feliz/platillos/combinacion",
+    fallbackImage: "pollo-feliz/platillos/combinacion",
     badge: "¡Best Seller!"
   },
   {
@@ -39,8 +39,8 @@ const slides: SlideData[] = [
       "Pollo a la parrilla jugoso",
       "Aderezo Caesar casero"
     ],
-    image: "/imagenes/ENSALADA 4.png",
-    fallbackImage: "/imagenes/Ensalada_Fresca.png",
+    image: "pollo-feliz/platillos/ensalada_4",
+    fallbackImage: "pollo-feliz/platillos/ensalada_fresca",
     badge: "🥗 Fresh"
   },
   {
@@ -53,8 +53,8 @@ const slides: SlideData[] = [
       "Verduras del día recién cortadas",
       "Crutones dorados artesanales"
     ],
-    image: "/imagenes/ENSALADA 5.png",
-    fallbackImage: "/imagenes/ensalda 2.png",
+    image: "pollo-feliz/platillos/ensalada_5",
+    fallbackImage: "pollo-feliz/platillos/ensalada_2",
     badge: "💚 Healthy"
   },
   {
@@ -67,8 +67,8 @@ const slides: SlideData[] = [
       "Papas fritas perfectamente doradas",
       "Pan suave con ajonjolí"
     ],
-    image: "/imagenes/HAMBURGUESA.png",
-    fallbackImage: "/imagenes/HAMB1.png",
+    image: "pollo-feliz/platillos/hamburguesa",
+    fallbackImage: "pollo-feliz/platillos/hamburguesa_1",
     badge: "🍔 Irresistible"
   },
   {
@@ -81,8 +81,8 @@ const slides: SlideData[] = [
       "Empanizado extra crujiente",
       "Porción generosa para compartir"
     ],
-    image: "/imagenes/nuggets.png",
-    fallbackImage: "/imagenes/nuggets.png",
+    image: "pollo-feliz/platillos/nuggets",
+    fallbackImage: "pollo-feliz/platillos/nuggets",
     badge: "🍗 Kids Favorite"
   }
 ];

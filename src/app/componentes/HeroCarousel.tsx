@@ -8,8 +8,8 @@ type Slide =
 
 const defaultSlides: Slide[] = [
   { type: "youtube", id: "FJtst-Flz94", title: "Pollo Feliz - Comercial" },
-  "/slider/combinacion.jpg",
-  "/slider/perfil.jpg",
+  { src: "pollo-feliz/slider/combinacion", alt: "Combinación perfecta" },
+  { src: "pollo-feliz/slider/perfil", alt: "Perfil de Pollo Feliz" },
   "/slider/pollo_feliz_2.svg",
   "/slider/pollo_feliz_3.svg",
   "/slider/pollo_feliz_13.svg",
@@ -221,9 +221,12 @@ export default function HeroCarousel({ slides = defaultSlides, interval = 4000 }
               ? { src: s, alt: "slide" }
               : (s as { src: string; alt?: string });
           
-          // Usa object-contain para combinacion.jpg para verla completa y más ancha
+          // Usa object-contain para combinacion para verla completa y más ancha
           const isCombiImage = imageSlide.src.includes("combinacion");
           const objectFit = isCombiImage ? "object-contain" : "object-cover";
+          
+          // Si es una imagen de Cloudinary (sin .svg y sin /), usa CldImage
+          const isCloudinary = !imageSlide.src.endsWith('.svg') && !imageSlide.src.startsWith('/');
           
           return (
             <div
@@ -232,7 +235,15 @@ export default function HeroCarousel({ slides = defaultSlides, interval = 4000 }
               aria-hidden={i === index ? "false" : "true"}
             >
               <div className="absolute inset-0 bg-neutral-950">
-                <img src={imageSlide.src} alt={imageSlide.alt || "slide"} className={`w-full h-full ${objectFit}`} />
+                {isCloudinary ? (
+                  <img 
+                    src={`https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/w_1920,q_auto,f_auto/${imageSlide.src}`}
+                    alt={imageSlide.alt || "slide"} 
+                    className={`w-full h-full ${objectFit}`}
+                  />
+                ) : (
+                  <img src={imageSlide.src} alt={imageSlide.alt || "slide"} className={`w-full h-full ${objectFit}`} />
+                )}
               </div>
               <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: "var(--overlay)" }} />
             </div>

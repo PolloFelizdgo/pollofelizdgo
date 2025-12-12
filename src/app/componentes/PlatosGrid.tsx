@@ -1,18 +1,15 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { PLATOS } from "../data/platos";
+import CloudinaryImage from "./CloudinaryImage";
+import { CldImage } from "next-cloudinary";
 
-// PlatosGrid: muestra una cuadrícula de platillos usando imágenes en public/imagenes
-// Instrucciones:
-// - Coloca tus imágenes en `public/imagenes/` con los nombres indicados en cada objeto.
-// - Para activar el precio visible, rellena `price` con un número (ej. 129.00).
-// - Puedes añadir `srcSet` o variantes si subes imágenes en diferentes resoluciones.
+// PlatosGrid: muestra una cuadrícula de platillos usando imágenes de Cloudinary
+// Las imágenes se cargan automáticamente desde pollo-feliz/platillos/
 
 export default function PlatosGrid() {
   const [modalImage, setModalImage] = useState<string | null>(null);
   const [modalTitle, setModalTitle] = useState<string | null>(null);
-  const [imagesMap, setImagesMap] = useState<Record<string, { default?: string; srcSet?: string }>>({});
-  const [loadingImages, setLoadingImages] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -22,26 +19,6 @@ export default function PlatosGrid() {
     return () => document.removeEventListener("keydown", onKey);
   }, []);
 
-  useEffect(() => {
-    const load = async () => {
-      try {
-        const cached = typeof sessionStorage !== 'undefined' ? sessionStorage.getItem('imagenesMap') : null;
-        if (cached) {
-          setImagesMap(JSON.parse(cached));
-          return;
-        }
-        const res = await fetch('/api/images');
-        if (!res.ok) return;
-        const data = await res.json();
-        setImagesMap(data || {});
-        try { if (typeof sessionStorage !== 'undefined') sessionStorage.setItem('imagenesMap', JSON.stringify(data || {})); } catch (e) { /* ignore storage errors */ }
-      } catch (err) {
-        // ignore
-      }
-    };
-    load();
-  }, []);
-
   return (
     <section aria-labelledby="platos-title" className="w-full px-4 md:px-8 py-8 bg-white">
       {/* Sección: Nuestros Platos - aquí puedes editar/añadir platillos */}
@@ -49,32 +26,25 @@ export default function PlatosGrid() {
 
       <div className="gap-2 grid grid-cols-2 sm:grid-cols-4">
         {PLATOS.map((p, index) => {
-          const meta = imagesMap[p.imageBase] || {};
-          const src = meta.default ?? `/imagenes/platillos/${p.imageBase}.jpg`;
-
           return (
             <div 
               key={index} 
               className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer overflow-hidden"
               onClick={() => {
-                setModalImage(src);
+                setModalImage(p.imageBase);
                 setModalTitle(p.name);
               }}
             >
-              <div className="overflow-visible p-0 relative">
-                {loadingImages[p.imageBase] !== false && (
-                  <div className="absolute inset-0 bg-gradient-to-br from-gray-200 to-gray-300 animate-pulse rounded-t-lg" />
-                )}
-                <img
+              <div className="overflow-visible p-0 relative h-[140px]">
+                <CldImage
+                  src={p.imageBase}
                   alt={p.name}
-                  className="w-full object-cover h-[140px] rounded-t-lg"
-                  src={src}
+                  width={400}
+                  height={300}
+                  crop="fill"
+                  gravity="auto"
+                  className="w-full object-cover h-full rounded-t-lg"
                   loading="lazy"
-                  onLoad={() => setLoadingImages(prev => ({ ...prev, [p.imageBase]: false }))}
-                  onError={(e) => {
-                    e.currentTarget.src = `/imagenes/platillos/placeholder.jpg`;
-                    setLoadingImages(prev => ({ ...prev, [p.imageBase]: false }));
-                  }}
                 />
               </div>
               <div className="p-3 flex justify-between items-center text-sm">
@@ -100,8 +70,14 @@ export default function PlatosGrid() {
               </button>
             </div>
             <div className="w-full h-[60vh] md:h-[70vh] bg-white">
-              {/* Modal background changed to white so images display on a clean surface */}
-              <img src={modalImage} alt={modalTitle || "imagen"} className="w-full h-full object-contain bg-transparent" />
+              <CldImage
+                src={modalImage}
+                alt={modalTitle || "imagen"}
+                width={1200}
+                height={900}
+                crop="fit"
+                className="w-full h-full object-contain bg-transparent"
+              />
             </div>
           </div>
         </div>
