@@ -28,6 +28,7 @@ body > *:not(#cookie-banner-overlay):not(#cookie-banner) {
   font-style: normal;
   font-display: swap;
 }
+/* Fuentes comentadas temporalmente - archivos no encontrados
 @font-face {
   font-family: 'Brignell Square';
   src: url('/fonts/Brignell-Square-Bold.woff2') format('woff2');
@@ -42,12 +43,13 @@ body > *:not(#cookie-banner-overlay):not(#cookie-banner) {
   font-style: normal;
   font-display: swap;
 }
+*/
 
 :root {
   /* Typography variables: update if you change font filenames */
   --font-title: 'NEILVARD One', 'NEILVARD', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  --font-subtitle: 'Brignell Square', 'Brignell', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  --font-body: 'Grignell Square', 'Grignell', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-subtitle: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
 :root {

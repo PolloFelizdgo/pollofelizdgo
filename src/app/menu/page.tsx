@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Section from "../componentes/Section";
 import { PLATOS } from "../data/platos";
-import { CldImage } from "next-cloudinary";
+import Image from "next/image";
 
 /*
   Página: /menu
@@ -127,14 +127,13 @@ export default function MenuPage() {
               <article key={p.name} className="bg-white rounded-lg shadow-md overflow-hidden group">
                 <div className="relative w-full h-48 bg-slate-100 overflow-hidden flex items-center justify-center">
                   {/* Image: using Cloudinary */}
-                  <CldImage 
-                    src={p.imageBase} 
+                  <Image 
+                    src={`https://res.cloudinary.com/dw55kbkmn/image/upload/c_fill,g_auto,w_400,h_300/${p.imageBase}`}
                     alt={p.name} 
                     width={400}
                     height={300}
-                    crop="fill"
-                    gravity="auto"
-                    className="max-w-full max-h-full object-contain transition-transform duration-300 group-hover:scale-110" 
+                    className="max-w-full max-h-full object-contain transition-transform duration-300 group-hover:scale-110"
+                    loading="lazy"
                   />
 
                   {/* price badge (SVG chip) */}
@@ -185,13 +184,12 @@ export default function MenuPage() {
                 <button className="text-slate-600" onClick={() => setModal(null)} aria-label="Cerrar">✕</button>
               </div>
               <div className="w-full h-[60vh] bg-slate-100 flex items-center justify-center">
-                <CldImage 
-                  src={modal.src} 
+                <Image 
+                  src={`https://res.cloudinary.com/dw55kbkmn/image/upload/c_fit,w_800,h_600/${modal.src}`}
                   alt={modal.title || "imagen"} 
                   width={800}
                   height={600}
-                  crop="fit"
-                  className="max-h-full max-w-full object-contain" 
+                  className="max-h-full max-w-full object-contain"
                 />
               </div>
             </div>
