@@ -98,14 +98,14 @@ export default function HomeClient() {
               <div className="mt-4 text-black font-black text-[24px] sm:text-[32px] md:text-[40px] tracking-wider uppercase" style={{ fontFamily: 'Impact, "Arial Black", sans-serif', letterSpacing: '0.2em' }}>
                 Sabor para Sonreír®
               </div>
+              
+              {/* Separador decorativo estilo oficial */}
+              <div className="flex items-center justify-center gap-3 mt-6 mb-8" aria-hidden="true">
+                <div className="h-[2px] w-20 sm:w-28 md:w-32 bg-gradient-to-r from-transparent to-red-500"></div>
+                <div className="w-3 h-3 bg-pink-400 rounded-full shadow-lg"></div>
+                <div className="h-[2px] w-20 sm:w-28 md:w-32 bg-gradient-to-l from-transparent to-red-500"></div>
+              </div>
             </h1>
-
-            {/* Línea decorativa */}
-            <div className="flex items-center gap-4 mb-6 animate-fade-in" aria-hidden="true">
-              <div className="h-px w-24 bg-gradient-to-r from-transparent to-red-500"></div>
-              <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
-              <div className="h-px w-24 bg-gradient-to-l from-transparent to-red-500"></div>
-            </div>
 
             {/* Subtítulos mejorados */}
             <div className="mb-12 space-y-5 animate-slide-up">
