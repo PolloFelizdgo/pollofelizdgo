@@ -4,7 +4,14 @@ import React from "react";
 
 export default function BolsaDeTrabajoPage() {
   return (
-    <main className="relative min-h-screen bg-gradient-to-br from-gray-900 via-red-900 to-black overflow-hidden">
+    <main className="relative min-h-screen overflow-hidden">
+      {/* Fondo decorativo animado - igual que la página de inicio */}
+      <div className="fixed inset-0 -z-10 bg-gradient-to-br from-orange-50 via-yellow-50 to-red-50">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(251,146,60,0.1)_0%,transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(234,88,12,0.1)_0%,transparent_50%)]" />
+        <div className="absolute top-20 left-10 w-72 h-72 bg-orange-200/20 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-red-200/20 rounded-full blur-3xl animate-pulse" style={{animationDelay: '2s'}} />
+      </div>
       {/* Contenido principal */}
       <div className="relative z-10 max-w-6xl mx-auto px-4 py-24">
         

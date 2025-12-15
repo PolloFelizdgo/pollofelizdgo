@@ -19,18 +19,13 @@ export default function AboutPage() {
   // `GalleryClient` y pásale una lista de fotos desde aquí.
 
   return (
-    <main className="relative overflow-hidden bg-gradient-to-br from-red-50 via-white to-amber-50">
-      {/* Decorative Wave Background */}
-      <div className="relative h-16 bg-gradient-to-b from-orange-50 to-gray-50">
-        <svg className="absolute bottom-0 w-full h-16" viewBox="0 0 1440 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0 0L60 8.33C120 16.7 240 33.3 360 41.7C480 50 600 50 720 45C840 40 960 30 1080 26.7C1200 23.3 1320 26.7 1380 28.3L1440 30V100H1380C1320 100 1200 100 1080 100C960 100 840 100 720 100C600 100 480 100 360 100C240 100 120 100 60 100H0V0Z" fill="url(#paint0_linear_about)"></path>
-          <defs>
-            <linearGradient id="paint0_linear_about" x1="720" y1="0" x2="720" y2="100" gradientUnits="userSpaceOnUse">
-              <stop stopColor="#ff0000" stopOpacity="0.1"></stop>
-              <stop offset="1" stopColor="#ffbc00" stopOpacity="0.05"></stop>
-            </linearGradient>
-          </defs>
-        </svg>
+    <main className="relative overflow-hidden">
+      {/* Fondo decorativo animado - igual que la página de inicio */}
+      <div className="fixed inset-0 -z-10 bg-gradient-to-br from-orange-50 via-yellow-50 to-red-50">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(251,146,60,0.1)_0%,transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(234,88,12,0.1)_0%,transparent_50%)]" />
+        <div className="absolute top-20 left-10 w-72 h-72 bg-orange-200/20 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-red-200/20 rounded-full blur-3xl animate-pulse" style={{animationDelay: '2s'}} />
       </div>
 
       {/* Hero Section - Nuestra misión y valores */}
