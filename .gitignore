@@ -53,3 +53,6 @@ next-env.d.ts
 !public/imagenes/platillos/README.md
 /public/slider/*.jpg
 /public/slider/*.png
+
+.vercel
+.env*.local
