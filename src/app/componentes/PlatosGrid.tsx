@@ -1,8 +1,8 @@
 "use client";
 import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { PLATOS } from "../data/platos";
-import CloudinaryImage from "./CloudinaryImage";
-import { CldImage } from "next-cloudinary";
+import Image from "next/image";
+import { CLOUDINARY_CONFIG } from "@/lib/cloudinary-images";
 
 // PlatosGrid: muestra una cuadrícula de platillos usando imágenes de Cloudinary
 // Optimizado con React.memo y lazy loading
@@ -46,15 +46,14 @@ function PlatosGrid() {
               onClick={() => openModal(p.imageBase, p.name)}
             >
               <div className="overflow-visible p-0 relative h-[140px]">
-                <CldImage
-                  src={p.imageBase}
+                <Image
+                  src={`https://res.cloudinary.com/${CLOUDINARY_CONFIG.cloudName}/image/upload/c_fill,g_auto,w_400,h_300,f_auto,q_auto/${p.imageBase}`}
                   alt={p.name}
                   width={400}
                   height={300}
-                  crop="fill"
-                  gravity="auto"
                   className="w-full object-cover h-full rounded-t-lg"
                   loading="lazy"
+                  unoptimized
                 />
               </div>
               <div className="p-3 flex justify-between items-center text-sm">
@@ -79,14 +78,14 @@ function PlatosGrid() {
                 ✕
               </button>
             </div>
-            <div className="w-full h-[60vh] md:h-[70vh] bg-white">
-              <CldImage
-                src={modalImage}
+            <div className="w-full h-[60vh] md:h-[70vh] bg-white flex items-center justify-center">
+              <Image
+                src={`https://res.cloudinary.com/${CLOUDINARY_CONFIG.cloudName}/image/upload/c_fit,w_1200,h_900,f_auto,q_auto/${modalImage}`}
                 alt={modalTitle || "imagen"}
                 width={1200}
                 height={900}
-                crop="fit"
-                className="w-full h-full object-contain bg-transparent"
+                className="max-w-full max-h-full object-contain"
+                unoptimized
               />
             </div>
           </div>

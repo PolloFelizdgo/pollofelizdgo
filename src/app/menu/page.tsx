@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Section from "../componentes/Section";
 import { PLATOS } from "../data/platos";
 import Image from "next/image";
+import { CLOUDINARY_CONFIG } from "@/lib/cloudinary-images";
 
 /*
   Página: /menu
@@ -128,12 +129,13 @@ export default function MenuPage() {
                 <div className="relative w-full h-48 bg-slate-100 overflow-hidden flex items-center justify-center">
                   {/* Image: using Cloudinary */}
                   <Image 
-                    src={`https://res.cloudinary.com/dw55kbkmn/image/upload/c_fill,g_auto,w_400,h_300/${p.imageBase}`}
+                    src={`https://res.cloudinary.com/${CLOUDINARY_CONFIG.cloudName}/image/upload/c_fill,g_auto,w_400,h_300,f_auto,q_auto/${p.imageBase}`}
                     alt={p.name} 
                     width={400}
                     height={300}
                     className="max-w-full max-h-full object-contain transition-transform duration-300 group-hover:scale-110"
                     loading="lazy"
+                    unoptimized
                   />
 
                   {/* price badge (SVG chip) */}
@@ -185,11 +187,12 @@ export default function MenuPage() {
               </div>
               <div className="w-full h-[60vh] bg-slate-100 flex items-center justify-center">
                 <Image 
-                  src={`https://res.cloudinary.com/dw55kbkmn/image/upload/c_fit,w_800,h_600/${modal.src}`}
+                  src={`https://res.cloudinary.com/${CLOUDINARY_CONFIG.cloudName}/image/upload/c_fit,w_800,h_600,f_auto,q_auto/${modal.src}`}
                   alt={modal.title || "imagen"} 
                   width={800}
                   height={600}
                   className="max-h-full max-w-full object-contain"
+                  unoptimized
                 />
               </div>
             </div>

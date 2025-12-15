@@ -1,7 +1,8 @@
 "use client";
 import React, { useEffect, useMemo, useState } from "react";
 import { PLATOS } from "../data/platos";
-import { CldImage } from "next-cloudinary";
+import Image from "next/image";
+import { CLOUDINARY_CONFIG } from "@/lib/cloudinary-images";
 
 export default function MenuSidebar() {
   const [query, setQuery] = useState("");
@@ -59,14 +60,13 @@ export default function MenuSidebar() {
               return (
                 <div key={p.name} className="flex items-center gap-3">
                   <div className="w-16 h-12 bg-slate-100 rounded overflow-hidden flex items-center justify-center">
-                    <CldImage 
-                      src={p.imageBase} 
+                    <Image 
+                      src={`https://res.cloudinary.com/${CLOUDINARY_CONFIG.cloudName}/image/upload/c_fill,g_auto,w_64,h_48,f_auto,q_auto/${p.imageBase}`}
                       alt={p.name} 
                       width={64}
                       height={48}
-                      crop="fill"
-                      gravity="auto"
                       className="max-w-full max-h-full object-contain"
+                      unoptimized
                     />
                   </div>
                   <div className="flex-1">
@@ -95,14 +95,14 @@ export default function MenuSidebar() {
                 <h3 className="text-lg font-medium">{modal.title}</h3>
                 <button className="text-slate-600" onClick={() => setModal(null)} aria-label="Cerrar">✕</button>
               </div>
-              <div className="w-full h-56 bg-slate-100">
-                <CldImage 
-                  src={modal.src} 
+              <div className="w-full h-56 bg-slate-100 flex items-center justify-center">
+                <Image 
+                  src={`https://res.cloudinary.com/${CLOUDINARY_CONFIG.cloudName}/image/upload/c_fit,w_600,h_400,f_auto,q_auto/${modal.src}`}
                   alt={modal.title || "imagen"} 
                   width={600}
                   height={400}
-                  crop="fit"
-                  className="w-full h-full object-contain" 
+                  className="max-w-full max-h-full object-contain"
+                  unoptimized
                 />
               </div>
             </div>

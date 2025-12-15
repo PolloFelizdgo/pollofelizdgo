@@ -1,8 +1,9 @@
 "use client";
-import { CldImage, CldImageProps } from 'next-cloudinary';
+import Image from 'next/image';
 import { useState } from 'react';
+import { CLOUDINARY_CONFIG } from '@/lib/cloudinary-images';
 
-interface CloudinaryImageProps extends Omit<CldImageProps, 'src'> {
+interface CloudinaryImageProps {
   src: string;
   alt: string;
   width: number;
@@ -11,6 +12,8 @@ interface CloudinaryImageProps extends Omit<CldImageProps, 'src'> {
   priority?: boolean;
   loading?: "lazy" | "eager";
   placeholder?: "blur" | "empty";
+  crop?: string;
+  gravity?: string;
 }
 
 /**
@@ -31,10 +34,13 @@ export default function CloudinaryImage({
   priority = false,
   loading = "lazy",
   placeholder = "blur",
-  ...props
+  crop = "fill",
+  gravity = "auto"
 }: CloudinaryImageProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
+
+  const cloudinaryUrl = `https://res.cloudinary.com/${CLOUDINARY_CONFIG.cloudName}/image/upload/c_${crop},g_${gravity},w_${width},h_${height},f_auto,q_auto/${src}`;
 
   return (
     <div className={`relative overflow-hidden ${className}`} style={{ width, height }}>
@@ -57,24 +63,20 @@ export default function CloudinaryImage({
       
       {/* Imagen principal */}
       {!hasError && (
-        <CldImage
-          src={src}
+        <Image
+          src={cloudinaryUrl}
           alt={alt}
           width={width}
           height={height}
           className={`transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
           priority={priority}
-          crop="fill"
-          gravity="auto"
-          quality="auto"
-          format="auto"
           loading={priority ? "eager" : loading}
           onLoad={() => setIsLoading(false)}
           onError={() => {
             setIsLoading(false);
             setHasError(true);
           }}
-          {...props}
+          unoptimized
         />
       )}
     </div>
