@@ -1,34 +1,59 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 420" preserveAspectRatio="xMidYMid meet">
   <defs>
     <style>
-      .logo-bg { fill: #EF4444; }
-      .logo-text { fill: #FCD34D; }
+      .logo-text { 
+        fill: #FCD34D; 
+        stroke: #DC2626; 
+        stroke-width: 25; 
+        stroke-linejoin: round;
+        stroke-linecap: round;
+        paint-order: stroke fill;
+      }
       .tagline-text { fill: #000000; font-weight: 900; }
     </style>
-    
-    <!-- Definir el path ondulado para el texto -->
-    <path id="wavePath" d="M 50,160 Q 150,120 250,160 T 450,160 T 650,160 T 850,160 T 1050,160 T 1250,160 T 1450,160 T 1550,160" />
   </defs>
   
-  <!-- Fondo rojo ondulado detrás del texto -->
-  <path d="M 0,50 Q 80,20 160,50 T 320,50 T 480,50 T 640,50 T 800,50 T 960,50 T 1120,50 T 1280,50 T 1440,50 T 1600,50 
-           L 1600,280 Q 1520,250 1440,280 T 1280,280 T 1120,280 T 960,280 T 800,280 T 640,280 T 480,280 T 320,280 T 160,280 T 0,280 Z" 
-        class="logo-bg" />
-  
-  <!-- POLLO FELIZ con efecto de onda -->
-  <text font-family="Impact, Arial Black, sans-serif" font-size="140" font-weight="900" class="logo-text" letter-spacing="3">
-    <textPath href="#wavePath" startOffset="50%" text-anchor="middle">
-      POLLO FELIZ
-    </textPath>
-  </text>
+  <!-- Fondo rojo con contorno grueso -->
+  <g>
+    <!-- Letras P -->
+    <text x="50" y="220" font-family="Impact, Arial Black, sans-serif" font-size="200" font-weight="900" class="logo-text">P</text>
+    
+    <!-- Letra O -->
+    <text x="220" y="220" font-family="Impact, Arial Black, sans-serif" font-size="200" font-weight="900" class="logo-text">O</text>
+    
+    <!-- Letra L -->
+    <text x="420" y="220" font-family="Impact, Arial Black, sans-serif" font-size="200" font-weight="900" class="logo-text">L</text>
+    
+    <!-- Letra L -->
+    <text x="570" y="220" font-family="Impact, Arial Black, sans-serif" font-size="200" font-weight="900" class="logo-text">L</text>
+    
+    <!-- Letra O -->
+    <text x="720" y="220" font-family="Impact, Arial Black, sans-serif" font-size="200" font-weight="900" class="logo-text">O</text>
+    
+    <!-- Letra F -->
+    <text x="920" y="220" font-family="Impact, Arial Black, sans-serif" font-size="200" font-weight="900" class="logo-text">F</text>
+    
+    <!-- Letra E -->
+    <text x="1070" y="220" font-family="Impact, Arial Black, sans-serif" font-size="200" font-weight="900" class="logo-text">E</text>
+    
+    <!-- Letra L -->
+    <text x="1230" y="220" font-family="Impact, Arial Black, sans-serif" font-size="200" font-weight="900" class="logo-text">L</text>
+    
+    <!-- Letra I -->
+    <text x="1380" y="220" font-family="Impact, Arial Black, sans-serif" font-size="200" font-weight="900" class="logo-text">I</text>
+    
+    <!-- Letra Z -->
+    <text x="1460" y="220" font-family="Impact, Arial Black, sans-serif" font-size="200" font-weight="900" class="logo-text">Z</text>
+  </g>
   
   <!-- Símbolo registrado -->
-  <circle cx="1520" cy="70" r="22" fill="#EF4444"/>
-  <text x="1520" y="82" font-size="32" font-weight="900" fill="#FCD34D" text-anchor="middle">®</text>
+  <circle cx="1560" cy="60" r="20" fill="#DC2626" stroke="#FFFFFF" stroke-width="2"/>
+  <text x="1560" y="72" font-size="28" font-weight="900" fill="#FFFFFF" text-anchor="middle">®</text>
   
   <!-- SABOR PARA SONREÍR -->
-  <text x="800" y="360" font-family="Impact, Arial Black, sans-serif" font-size="70" font-weight="900" text-anchor="middle" class="tagline-text" letter-spacing="8">SABOR PARA SONREÍR</text>
+  <text x="800" y="360" font-family="Impact, Arial Black, sans-serif" font-size="80" font-weight="900" text-anchor="middle" class="tagline-text" letter-spacing="12">SABOR PARA SONREÍR</text>
   
   <!-- Símbolo registrado para el tagline -->
-  <text x="1230" y="348" font-size="28" font-weight="900" fill="#000000">®</text>
+  <circle cx="1220" cy="345" r="15" fill="#000000"/>
+  <text x="1220" y="353" font-size="20" font-weight="900" fill="#FFFFFF" text-anchor="middle">®</text>
 </svg>
