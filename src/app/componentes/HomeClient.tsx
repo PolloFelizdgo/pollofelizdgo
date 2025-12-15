@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import { SUCURSALES } from "../data/sucursales";
 import { GRADIENTS, MAP_SETTINGS } from "@/lib/constants";
 import LazyLoad from "./LazyLoad";
@@ -75,32 +76,23 @@ export default function HomeClient() {
               <span className="text-base md:text-lg tracking-wide">⭐ Calidad Garantizada desde 2003 ⭐</span>
             </div>
 
-            <h1 className="mb-8 leading-none animate-fade-in">
-              {/* Logo estilo Pollo Feliz con contorno rojo y letras amarillas */}
-              <div className="inline-block relative">
-                <div 
-                  className="relative font-black text-[48px] sm:text-[64px] md:text-[88px] lg:text-[120px] tracking-wider"
-                  style={{ 
-                    fontFamily: 'Impact, "Arial Black", sans-serif',
-                    WebkitTextStroke: '8px #DC2626',
-                    paintOrder: 'stroke fill',
-                    color: '#FCD34D',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.05em',
-                    filter: 'drop-shadow(4px 4px 0px rgba(0,0,0,0.3))',
-                    lineHeight: '0.9'
-                  }}
-                >
-                  POLLO FELIZ
-                  <span className="absolute -top-2 -right-6 text-4xl md:text-5xl">®</span>
+            <h1 className="mb-12 leading-none animate-fade-in">
+              {/* Logo oficial de Pollo Feliz - Imagen responsiva */}
+              <div className="relative w-full max-w-[90%] sm:max-w-[700px] md:max-w-[900px] lg:max-w-[1100px] mx-auto">
+                <div className="relative w-full" style={{ aspectRatio: '15/4' }}>
+                  <Image
+                    src="/logo-pollo-feliz.svg"
+                    alt="Pollo Feliz - Sabor para Sonreír"
+                    fill
+                    priority
+                    className="object-contain drop-shadow-2xl"
+                    sizes="(max-width: 640px) 90vw, (max-width: 768px) 700px, (max-width: 1024px) 900px, 1100px"
+                  />
                 </div>
-              </div>
-              <div className="mt-4 text-black font-black text-[24px] sm:text-[32px] md:text-[40px] tracking-wider uppercase" style={{ fontFamily: 'Impact, "Arial Black", sans-serif', letterSpacing: '0.2em' }}>
-                Sabor para Sonreír®
               </div>
               
               {/* Separador decorativo estilo oficial */}
-              <div className="flex items-center justify-center gap-3 mt-6 mb-8" aria-hidden="true">
+              <div className="flex items-center justify-center gap-3 mt-8 mb-8" aria-hidden="true">
                 <div className="h-[2px] w-20 sm:w-28 md:w-32 bg-gradient-to-r from-transparent to-red-500"></div>
                 <div className="w-3 h-3 bg-pink-400 rounded-full shadow-lg"></div>
                 <div className="h-[2px] w-20 sm:w-28 md:w-32 bg-gradient-to-l from-transparent to-red-500"></div>
