@@ -167,23 +167,23 @@ export default function CombinacionSlider() {
         {/* Contenido del slide */}
         <div className="flex flex-col items-center gap-6 mb-8">
           {/* Título principal */}
-          <h2 className="text-6xl md:text-7xl font-black text-red-700 tracking-tighter leading-none drop-shadow-2xl">
+          <h2 className="text-6xl md:text-7xl font-black text-white tracking-tighter leading-none drop-shadow-2xl">
             {slide.title}
           </h2>
           
           {/* Subtítulo */}
-          <h3 className="text-4xl md:text-5xl font-bold text-orange-600 drop-shadow-lg">
+          <h3 className="text-4xl md:text-5xl font-bold text-white drop-shadow-lg">
             {slide.subtitle}
           </h3>
           
           {/* Descripción */}
-          <p className="text-xl md:text-2xl text-gray-800 dark:text-gray-200 max-w-2xl leading-relaxed font-medium">
+          <p className="text-xl md:text-2xl text-white max-w-2xl leading-relaxed font-medium drop-shadow-lg">
             {slide.description}
           </p>
           
           {/* Ingredientes */}
           <div className="bg-gradient-to-r from-orange-100 via-yellow-50 to-orange-100 dark:from-orange-900/30 dark:via-yellow-900/20 dark:to-orange-900/30 p-6 rounded-2xl shadow-xl border-2 border-orange-300 dark:border-orange-700 w-full max-w-lg">
-            <ul className="text-lg text-gray-700 dark:text-gray-300 font-semibold leading-relaxed space-y-2">
+            <ul className="text-lg text-white font-semibold leading-relaxed space-y-2">
               {slide.ingredients.map((ingredient, index) => (
                 <li key={index}>🍗 {ingredient}</li>
               ))}
@@ -211,13 +211,13 @@ export default function CombinacionSlider() {
         <div className="flex flex-col gap-4 w-full max-w-sm">
           {/* Botón WhatsApp principal */}
           <a href="https://wa.me/5218181234567" target="_blank" rel="noopener noreferrer" className="w-full">
-            <button className="group bg-green-500 hover:bg-green-600 text-black w-full px-10 py-5 rounded-full font-extrabold text-xl shadow-2xl hover:shadow-green-500/70 transition-all duration-300 transform hover:scale-110 flex items-center justify-center gap-4 border-4 border-black">
+            <button className="group bg-green-500 hover:bg-green-600 text-white w-full px-10 py-5 rounded-full font-extrabold text-xl shadow-2xl hover:shadow-green-500/70 transition-all duration-300 transform hover:scale-110 flex items-center justify-center gap-4 border-4 border-white">
               <img 
-                src="https://img.icons8.com/?size=100&id=BkugfgmBwtEI&format=png&color=000000" 
+                src="https://img.icons8.com/?size=100&id=BkugfgmBwtEI&format=png&color=FFFFFF" 
                 alt="WhatsApp" 
                 width="48"
                 height="48"
-                className="flex-shrink-0 group-hover:rotate-12 transition-transform filter brightness-0 invert"
+                className="flex-shrink-0 group-hover:rotate-12 transition-transform"
               />
               ¡Ordenar Ahora!
             </button>
