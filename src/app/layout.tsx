@@ -8,6 +8,8 @@ import { NavbarClean as Navbar } from "./componentes/NavbarClean";
 import Footer from "./componentes/footer";
 import JotFormScript from "./componentes/JotFormScript";
 import { IMAGES } from "@/lib/cloudinary-images";
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -96,6 +98,8 @@ export default function RootLayout({
           <Footer />
           
           <JotFormScript />
+          <Analytics />
+          <SpeedInsights />
         </body>
       </html>
   
