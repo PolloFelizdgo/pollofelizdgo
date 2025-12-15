@@ -181,16 +181,14 @@ export default function CombinacionSlider() {
           </h3>
           
           {/* Descripción - Blanco para Ensalada Caesar y Hamburguesa, negro para los demás */}
-          <p className={`text-xl md:text-2xl max-w-2xl leading-relaxed font-medium drop-shadow-lg ${
-            slide.id === 2 || slide.id === 4 ? 'text-white' : 'text-black'
-          }`}>
+            <p className="text-xl md:text-2xl max-w-2xl leading-relaxed font-medium drop-shadow-lg text-white">
             {slide.description}
-          </p>
+            </p>
           
-          {/* Ingredientes */}
+          {/* Ingredientes - Negro para Ensalada Caesar, blanco para Hamburguesa, negro para los demás */}
           <div className="bg-gradient-to-r from-orange-100 via-yellow-50 to-orange-100 dark:from-orange-900/30 dark:via-yellow-900/20 dark:to-orange-900/30 p-6 rounded-2xl shadow-xl border-2 border-orange-300 dark:border-orange-700 w-full max-w-lg">
             <ul className={`text-lg font-semibold leading-relaxed space-y-2 ${
-              slide.id === 2 || slide.id === 4 ? 'text-white' : 'text-black'
+              slide.id === 4 ? 'text-white' : 'text-black'
             }`}>
               {slide.ingredients.map((ingredient, index) => (
                 <li key={index}>🍗 {ingredient}</li>
