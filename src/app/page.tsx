@@ -2,20 +2,45 @@
 // Propósito: landing principal. Contiene hero, CTA, grid de platos y mapa de la sucursal.
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import PlatosGrid from "./componentes/PlatosGridClient";
-import PromoImage from "./componentes/PromoImage";
 import { SUCURSALES } from "./data/sucursales";
-import HomeInteractive from "./componentes/HomeInteractive";
-import CombinacionSlider from "./componentes/CombinacionSlider";
 import { GRADIENTS, MAP_SETTINGS } from "@/lib/constants";
+import { IMAGES } from "@/lib/cloudinary-images";
 
-// Lazy load heavy components
+// Lazy load heavy components con loading states optimizados
+const PlatosGrid = dynamic(() => import("./componentes/PlatosGridClient"), {
+  loading: () => (
+    <div className="w-full px-4 md:px-8 py-8 bg-white">
+      <div className="h-8 w-48 bg-gray-200 animate-pulse rounded mb-6" />
+      <div className="gap-2 grid grid-cols-2 sm:grid-cols-4">
+        {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+          <div key={i} className="bg-gray-100 rounded-lg h-48 animate-pulse" />
+        ))}
+      </div>
+    </div>
+  ),
+  ssr: false,
+});
+
 const MapClient = dynamic(() => import("./componentes/MapClient"), {
   loading: () => (
     <div className="w-full h-96 bg-gray-100 animate-pulse rounded-2xl flex items-center justify-center">
       <p className="text-gray-500">Cargando mapa...</p>
     </div>
   ),
+  ssr: false,
+});
+
+const CombinacionSlider = dynamic(() => import("./componentes/CombinacionSlider"), {
+  loading: () => <div className="h-64 bg-gray-100 animate-pulse rounded-xl" />,
+  ssr: false,
+});
+
+const PromoImage = dynamic(() => import("./componentes/PromoImage"), {
+  loading: () => <div className="h-32 bg-gray-100 animate-pulse rounded-xl" />,
+});
+
+const HomeInteractive = dynamic(() => import("./componentes/HomeInteractive"), {
+  loading: () => <div className="h-[60vh] md:h-[70vh] bg-gray-100 animate-pulse" />,
 });
 
 // Constants for reusable styles

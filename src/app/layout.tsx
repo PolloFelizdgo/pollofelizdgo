@@ -7,6 +7,7 @@ import "leaflet/dist/leaflet.css";
 import { NavbarClean as Navbar } from "./componentes/NavbarClean";
 import Footer from "./componentes/footer";
 import JotFormScript from "./componentes/JotFormScript";
+import { IMAGES } from "@/lib/cloudinary-images";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -65,8 +66,17 @@ export default function RootLayout({
           <link rel="preload" href="/fonts/NEILVARD-One-Semibold.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
           <link rel="preload" href="/fonts/Brignell-Square-Bold.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
           <link rel="preload" href="/fonts/Grignell-Square-Medium.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
-          {/* Preload the main hero image to improve LCP (adjust path if your hero changes) */}
-          <link rel="preload" href="/slider/combinacion.jpg" as="image" />
+          {/* Preload critical images from Cloudinary for better LCP */}
+          <link 
+            rel="preload" 
+            as="image" 
+            href={`https://res.cloudinary.com/dw55kbkmn/image/upload/w_1200,f_auto,q_auto/${IMAGES.slider.combinacion}.jpg`}
+          />
+          <link 
+            rel="preload" 
+            as="image" 
+            href={`https://res.cloudinary.com/dw55kbkmn/image/upload/w_400,f_auto,q_auto/${IMAGES.platillos.combinacion}.jpg`}
+          />
         </head>
 
         <body

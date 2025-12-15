@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useMemo, useState } from "react";
 import { PLATOS } from "../data/platos";
+import { CldImage } from "next-cloudinary";
 
 export default function MenuSidebar() {
   const [query, setQuery] = useState("");
@@ -55,17 +56,17 @@ export default function MenuSidebar() {
           <div className="text-sm text-slate-600 mb-2">Platos</div>
           <div className="space-y-3 max-h-[60vh] overflow-auto pr-2">
             {filtered.map((p) => {
-              const src = `/imagenes/platillos/${p.imageBase}.jpg`;
               return (
                 <div key={p.name} className="flex items-center gap-3">
                   <div className="w-16 h-12 bg-slate-100 rounded overflow-hidden flex items-center justify-center">
-                    <img 
-                      src={src} 
+                    <CldImage 
+                      src={p.imageBase} 
                       alt={p.name} 
+                      width={64}
+                      height={48}
+                      crop="fill"
+                      gravity="auto"
                       className="max-w-full max-h-full object-contain"
-                      onError={(e) => {
-                        e.currentTarget.src = `/imagenes/platillos/${p.imageBase}.png`;
-                      }}
                     />
                   </div>
                   <div className="flex-1">
@@ -75,7 +76,7 @@ export default function MenuSidebar() {
                   <div>
                     <button
                       className="px-2 py-1 text-xs bg-slate-200 text-slate-800 rounded"
-                      onClick={() => setModal({ src, title: p.name })}
+                      onClick={() => setModal({ src: p.imageBase, title: p.name })}
                     >
                       Ver
                     </button>
@@ -95,7 +96,14 @@ export default function MenuSidebar() {
                 <button className="text-slate-600" onClick={() => setModal(null)} aria-label="Cerrar">✕</button>
               </div>
               <div className="w-full h-56 bg-slate-100">
-                <img src={modal.src} alt={modal.title || "imagen"} className="w-full h-full object-contain" />
+                <CldImage 
+                  src={modal.src} 
+                  alt={modal.title || "imagen"} 
+                  width={600}
+                  height={400}
+                  crop="fit"
+                  className="w-full h-full object-contain" 
+                />
               </div>
             </div>
           </div>

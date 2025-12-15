@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Section from "../componentes/Section";
 import { PLATOS } from "../data/platos";
+import { CldImage } from "next-cloudinary";
 
 /*
   Página: /menu
@@ -122,19 +123,18 @@ export default function MenuPage() {
         {/* Product cards grid (visual cards) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filtered.slice(0, visible).map((p) => {
-            const src = `/imagenes/platillos/${p.imageBase}.jpg`;
-
             return (
               <article key={p.name} className="bg-white rounded-lg shadow-md overflow-hidden group">
                 <div className="relative w-full h-48 bg-slate-100 overflow-hidden flex items-center justify-center">
-                  {/* Image: change image files in public/imagenes using the imageBase value in PLATOS */}
-                  <img 
-                    src={src} 
+                  {/* Image: using Cloudinary */}
+                  <CldImage 
+                    src={p.imageBase} 
                     alt={p.name} 
+                    width={400}
+                    height={300}
+                    crop="fill"
+                    gravity="auto"
                     className="max-w-full max-h-full object-contain transition-transform duration-300 group-hover:scale-110" 
-                    onError={(e) => {
-                      e.currentTarget.src = `/imagenes/platillos/${p.imageBase}.png`;
-                    }}
                   />
 
                   {/* price badge (SVG chip) */}
@@ -162,7 +162,7 @@ export default function MenuPage() {
 
                     <div className="mt-4 flex items-center justify-between">
                     <div className="text-sm text-slate-500">{p.category}</div>
-                    <button className="text-sm px-3 py-1 rounded cta-primary" style={{ backgroundColor: 'var(--accent)', color: 'white' }} onClick={() => setModal({ src, title: p.name })}>Ver</button>
+                    <button className="text-sm px-3 py-1 rounded cta-primary" style={{ backgroundColor: 'var(--accent)', color: 'white' }} onClick={() => setModal({ src: p.imageBase, title: p.name })}>Ver</button>
                   </div>
                 </div>
               </article>
@@ -185,7 +185,14 @@ export default function MenuPage() {
                 <button className="text-slate-600" onClick={() => setModal(null)} aria-label="Cerrar">✕</button>
               </div>
               <div className="w-full h-[60vh] bg-slate-100 flex items-center justify-center">
-                <img src={modal.src} alt={modal.title || "imagen"} className="max-h-full max-w-full object-contain" />
+                <CldImage 
+                  src={modal.src} 
+                  alt={modal.title || "imagen"} 
+                  width={800}
+                  height={600}
+                  crop="fit"
+                  className="max-h-full max-w-full object-contain" 
+                />
               </div>
             </div>
           </div>

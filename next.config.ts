@@ -7,13 +7,20 @@ const nextConfig: NextConfig = {
   // Image optimization configuration
   images: {
     formats: ['image/avif', 'image/webp'],
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    minimumCacheTTL: 60,
+    minimumCacheTTL: 86400, // 24 horas
     unoptimized: false,
-    // Allow logo.png to be optimized during build
-    remotePatterns: [],
+    // Cloudinary remote patterns
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        pathname: '/dw55kbkmn/**',
+      },
+    ],
     dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
 
   // Compiler optimizations
@@ -29,7 +36,9 @@ const nextConfig: NextConfig = {
   
   // Experimental features for better performance
   experimental: {
-    optimizePackageImports: ['heroui', 'leaflet', 'react-icons'],
+    optimizePackageImports: ['heroui', 'leaflet', 'react-icons', '@fortawesome/react-fontawesome', 'framer-motion'],
+    optimizeCss: true,
+    webpackMemoryOptimizations: true,
   },
 
   // Turbopack configuration (empty to silence the warning)
