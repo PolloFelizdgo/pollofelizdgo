@@ -59,13 +59,13 @@ export default function MenuSidebar() {
             {filtered.map((p) => {
               return (
                 <div key={p.name} className="flex items-center gap-3">
-                  <div className="w-16 h-12 bg-slate-100 rounded overflow-hidden flex items-center justify-center">
+                  <div className="relative w-16 h-12 bg-slate-100 rounded overflow-hidden flex-shrink-0">
                     <Image 
-                      src={`https://res.cloudinary.com/${CLOUDINARY_CONFIG.cloudName}/image/upload/c_fill,g_auto,w_64,h_48,f_auto,q_auto/${p.imageBase}`}
+                      src={`https://res.cloudinary.com/${CLOUDINARY_CONFIG.cloudName}/image/upload/c_fill,g_auto,w_128,h_96,f_auto,q_auto/${p.imageBase}`}
                       alt={p.name} 
-                      width={64}
-                      height={48}
-                      className="max-w-full max-h-full object-contain"
+                      fill
+                      sizes="64px"
+                      className="object-cover"
                       unoptimized
                     />
                   </div>
@@ -95,13 +95,13 @@ export default function MenuSidebar() {
                 <h3 className="text-lg font-medium">{modal.title}</h3>
                 <button className="text-slate-600" onClick={() => setModal(null)} aria-label="Cerrar">✕</button>
               </div>
-              <div className="w-full h-56 bg-slate-100 flex items-center justify-center">
+              <div className="relative w-full h-56 bg-slate-100">
                 <Image 
                   src={`https://res.cloudinary.com/${CLOUDINARY_CONFIG.cloudName}/image/upload/c_fit,w_600,h_400,f_auto,q_auto/${modal.src}`}
                   alt={modal.title || "imagen"} 
-                  width={600}
-                  height={400}
-                  className="max-w-full max-h-full object-contain"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 600px"
+                  className="object-contain"
                   unoptimized
                 />
               </div>

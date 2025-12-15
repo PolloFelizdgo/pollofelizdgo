@@ -43,7 +43,7 @@ export default function CloudinaryImage({
   const cloudinaryUrl = `https://res.cloudinary.com/${CLOUDINARY_CONFIG.cloudName}/image/upload/c_${crop},g_${gravity},w_${width},h_${height},f_auto,q_auto/${src}`;
 
   return (
-    <div className={`relative overflow-hidden ${className}`} style={{ width, height }}>
+    <div className={`relative w-full h-full overflow-hidden ${className}`}>
       {/* Blur placeholder mientras carga */}
       {isLoading && placeholder === "blur" && (
         <div className="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200 animate-pulse rounded-lg" />
@@ -66,9 +66,9 @@ export default function CloudinaryImage({
         <Image
           src={cloudinaryUrl}
           alt={alt}
-          width={width}
-          height={height}
-          className={`transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className={`object-cover transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
           priority={priority}
           loading={priority ? "eager" : loading}
           onLoad={() => setIsLoading(false)}

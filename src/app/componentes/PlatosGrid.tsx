@@ -45,13 +45,13 @@ function PlatosGrid() {
               className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer overflow-hidden"
               onClick={() => openModal(p.imageBase, p.name)}
             >
-              <div className="overflow-visible p-0 relative h-[140px]">
+              <div className="overflow-hidden relative h-[140px] w-full">
                 <Image
                   src={`https://res.cloudinary.com/${CLOUDINARY_CONFIG.cloudName}/image/upload/c_fill,g_auto,w_400,h_300,f_auto,q_auto/${p.imageBase}`}
                   alt={p.name}
-                  width={400}
-                  height={300}
-                  className="w-full object-cover h-full rounded-t-lg"
+                  fill
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                  className="object-cover rounded-t-lg"
                   loading="lazy"
                   unoptimized
                 />
@@ -78,13 +78,13 @@ function PlatosGrid() {
                 ✕
               </button>
             </div>
-            <div className="w-full h-[60vh] md:h-[70vh] bg-white flex items-center justify-center">
+            <div className="relative w-full h-[60vh] md:h-[70vh] bg-white">
               <Image
                 src={`https://res.cloudinary.com/${CLOUDINARY_CONFIG.cloudName}/image/upload/c_fit,w_1200,h_900,f_auto,q_auto/${modalImage}`}
                 alt={modalTitle || "imagen"}
-                width={1200}
-                height={900}
-                className="max-w-full max-h-full object-contain"
+                fill
+                sizes="(max-width: 768px) 100vw, 80vw"
+                className="object-contain"
                 unoptimized
               />
             </div>

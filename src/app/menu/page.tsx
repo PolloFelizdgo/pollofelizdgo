@@ -126,14 +126,14 @@ export default function MenuPage() {
           {filtered.slice(0, visible).map((p) => {
             return (
               <article key={p.name} className="bg-white rounded-lg shadow-md overflow-hidden group">
-                <div className="relative w-full h-48 bg-slate-100 overflow-hidden flex items-center justify-center">
+                <div className="relative w-full h-48 bg-slate-100 overflow-hidden">
                   {/* Image: using Cloudinary */}
                   <Image 
-                    src={`https://res.cloudinary.com/${CLOUDINARY_CONFIG.cloudName}/image/upload/c_fill,g_auto,w_400,h_300,f_auto,q_auto/${p.imageBase}`}
+                    src={`https://res.cloudinary.com/${CLOUDINARY_CONFIG.cloudName}/image/upload/c_fill,g_auto,w_600,h_450,f_auto,q_auto/${p.imageBase}`}
                     alt={p.name} 
-                    width={400}
-                    height={300}
-                    className="max-w-full max-h-full object-contain transition-transform duration-300 group-hover:scale-110"
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover transition-transform duration-300 group-hover:scale-110"
                     loading="lazy"
                     unoptimized
                   />
@@ -185,13 +185,13 @@ export default function MenuPage() {
                 <h4 className="text-lg font-medium">{modal.title}</h4>
                 <button className="text-slate-600" onClick={() => setModal(null)} aria-label="Cerrar">✕</button>
               </div>
-              <div className="w-full h-[60vh] bg-slate-100 flex items-center justify-center">
+              <div className="relative w-full h-[60vh] bg-slate-100">
                 <Image 
-                  src={`https://res.cloudinary.com/${CLOUDINARY_CONFIG.cloudName}/image/upload/c_fit,w_800,h_600,f_auto,q_auto/${modal.src}`}
+                  src={`https://res.cloudinary.com/${CLOUDINARY_CONFIG.cloudName}/image/upload/c_fit,w_1200,h_900,f_auto,q_auto/${modal.src}`}
                   alt={modal.title || "imagen"} 
-                  width={800}
-                  height={600}
-                  className="max-h-full max-w-full object-contain"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 80vw"
+                  className="object-contain"
                   unoptimized
                 />
               </div>
