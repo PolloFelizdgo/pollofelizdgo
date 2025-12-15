@@ -1,20 +1,34 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 400" preserveAspectRatio="xMidYMid meet">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 420" preserveAspectRatio="xMidYMid meet">
   <defs>
     <style>
-      .logo-text { fill: #FCD34D; stroke: #DC2626; stroke-width: 12; paint-order: stroke fill; }
-      .tagline-text { fill: #000000; }
+      .logo-bg { fill: #EF4444; }
+      .logo-text { fill: #FCD34D; }
+      .tagline-text { fill: #000000; font-weight: 900; }
     </style>
+    
+    <!-- Definir el path ondulado para el texto -->
+    <path id="wavePath" d="M 50,160 Q 150,120 250,160 T 450,160 T 650,160 T 850,160 T 1050,160 T 1250,160 T 1450,160 T 1550,160" />
   </defs>
   
-  <!-- POLLO FELIZ Text -->
-  <text x="750" y="200" font-family="Impact, Arial Black, sans-serif" font-size="180" font-weight="900" text-anchor="middle" class="logo-text" letter-spacing="8">POLLO FELIZ</text>
+  <!-- Fondo rojo ondulado detrás del texto -->
+  <path d="M 0,50 Q 80,20 160,50 T 320,50 T 480,50 T 640,50 T 800,50 T 960,50 T 1120,50 T 1280,50 T 1440,50 T 1600,50 
+           L 1600,280 Q 1520,250 1440,280 T 1280,280 T 1120,280 T 960,280 T 800,280 T 640,280 T 480,280 T 320,280 T 160,280 T 0,280 Z" 
+        class="logo-bg" />
   
-  <!-- Registered Symbol -->
-  <text x="1470" y="80" font-size="50" font-weight="900" fill="#DC2626">®</text>
+  <!-- POLLO FELIZ con efecto de onda -->
+  <text font-family="Impact, Arial Black, sans-serif" font-size="140" font-weight="900" class="logo-text" letter-spacing="3">
+    <textPath href="#wavePath" startOffset="50%" text-anchor="middle">
+      POLLO FELIZ
+    </textPath>
+  </text>
   
-  <!-- SABOR PARA SONREÍR Text -->
-  <text x="750" y="320" font-family="Impact, Arial Black, sans-serif" font-size="60" font-weight="900" text-anchor="middle" class="tagline-text" letter-spacing="12">SABOR PARA SONREÍR</text>
+  <!-- Símbolo registrado -->
+  <circle cx="1520" cy="70" r="22" fill="#EF4444"/>
+  <text x="1520" y="82" font-size="32" font-weight="900" fill="#FCD34D" text-anchor="middle">®</text>
   
-  <!-- Registered Symbol for tagline -->
-  <text x="1180" y="280" font-size="30" font-weight="900" fill="#000000">®</text>
+  <!-- SABOR PARA SONREÍR -->
+  <text x="800" y="360" font-family="Impact, Arial Black, sans-serif" font-size="70" font-weight="900" text-anchor="middle" class="tagline-text" letter-spacing="8">SABOR PARA SONREÍR</text>
+  
+  <!-- Símbolo registrado para el tagline -->
+  <text x="1230" y="348" font-size="28" font-weight="900" fill="#000000">®</text>
 </svg>
