@@ -1,59 +1,67 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 420" preserveAspectRatio="xMidYMid meet">
   <defs>
     <style>
-      .logo-text { 
-        fill: #FCD34D; 
-        stroke: #DC2626; 
-        stroke-width: 25; 
-        stroke-linejoin: round;
-        stroke-linecap: round;
-        paint-order: stroke fill;
-      }
+      .logo-bg { fill: #EF4444; }
+      .logo-text { fill: #FCD34D; }
       .tagline-text { fill: #000000; font-weight: 900; }
     </style>
   </defs>
   
-  <!-- Fondo rojo con contorno grueso -->
-  <g>
-    <!-- Letras P -->
-    <text x="50" y="220" font-family="Impact, Arial Black, sans-serif" font-size="200" font-weight="900" class="logo-text">P</text>
+  <!-- Fondos rojos redondeados para cada letra -->
+  <g class="logo-bg">
+    <!-- P fondo -->
+    <ellipse cx="95" cy="145" rx="75" ry="95" transform="rotate(-5 95 145)"/>
     
-    <!-- Letra O -->
-    <text x="220" y="220" font-family="Impact, Arial Black, sans-serif" font-size="200" font-weight="900" class="logo-text">O</text>
+    <!-- O fondo -->
+    <ellipse cx="240" cy="135" rx="85" ry="100" transform="rotate(-2 240 135)"/>
     
-    <!-- Letra L -->
-    <text x="420" y="220" font-family="Impact, Arial Black, sans-serif" font-size="200" font-weight="900" class="logo-text">L</text>
+    <!-- L fondo -->
+    <ellipse cx="395" cy="145" rx="75" ry="95" transform="rotate(3 395 145)"/>
     
-    <!-- Letra L -->
-    <text x="570" y="220" font-family="Impact, Arial Black, sans-serif" font-size="200" font-weight="900" class="logo-text">L</text>
+    <!-- L fondo -->
+    <ellipse cx="530" cy="140" rx="75" ry="95" transform="rotate(-4 530 140)"/>
     
-    <!-- Letra O -->
-    <text x="720" y="220" font-family="Impact, Arial Black, sans-serif" font-size="200" font-weight="900" class="logo-text">O</text>
+    <!-- O fondo -->
+    <ellipse cx="685" cy="145" rx="85" ry="100" transform="rotate(2 685 145)"/>
     
-    <!-- Letra F -->
-    <text x="920" y="220" font-family="Impact, Arial Black, sans-serif" font-size="200" font-weight="900" class="logo-text">F</text>
+    <!-- F fondo -->
+    <ellipse cx="860" cy="140" rx="80" ry="95" transform="rotate(-3 860 140)"/>
     
-    <!-- Letra E -->
-    <text x="1070" y="220" font-family="Impact, Arial Black, sans-serif" font-size="200" font-weight="900" class="logo-text">E</text>
+    <!-- E fondo -->
+    <ellipse cx="1010" cy="145" rx="80" ry="95" transform="rotate(4 1010 145)"/>
     
-    <!-- Letra L -->
-    <text x="1230" y="220" font-family="Impact, Arial Black, sans-serif" font-size="200" font-weight="900" class="logo-text">L</text>
+    <!-- L fondo -->
+    <ellipse cx="1160" cy="140" rx="75" ry="95" transform="rotate(-2 1160 140)"/>
     
-    <!-- Letra I -->
-    <text x="1380" y="220" font-family="Impact, Arial Black, sans-serif" font-size="200" font-weight="900" class="logo-text">I</text>
+    <!-- I fondo -->
+    <ellipse cx="1285" cy="145" rx="60" ry="95" transform="rotate(3 1285 145)"/>
     
-    <!-- Letra Z -->
-    <text x="1460" y="220" font-family="Impact, Arial Black, sans-serif" font-size="200" font-weight="900" class="logo-text">Z</text>
+    <!-- Z fondo -->
+    <ellipse cx="1415" cy="140" rx="80" ry="95" transform="rotate(-4 1415 140)"/>
+  </g>
+  
+  <!-- Letras amarillas -->
+  <g class="logo-text">
+    <text x="48" y="185" font-family="Impact, Arial Black, sans-serif" font-size="160" font-weight="900" letter-spacing="-5">P</text>
+    <text x="180" y="175" font-family="Impact, Arial Black, sans-serif" font-size="160" font-weight="900" letter-spacing="-5">O</text>
+    <text x="340" y="185" font-family="Impact, Arial Black, sans-serif" font-size="160" font-weight="900" letter-spacing="-5">L</text>
+    <text x="465" y="180" font-family="Impact, Arial Black, sans-serif" font-size="160" font-weight="900" letter-spacing="-5">L</text>
+    <text x="615" y="185" font-family="Impact, Arial Black, sans-serif" font-size="160" font-weight="900" letter-spacing="-5">O</text>
+    <text x="795" y="180" font-family="Impact, Arial Black, sans-serif" font-size="160" font-weight="900" letter-spacing="-5">F</text>
+    <text x="945" y="185" font-family="Impact, Arial Black, sans-serif" font-size="160" font-weight="900" letter-spacing="-5">E</text>
+    <text x="1095" y="180" font-family="Impact, Arial Black, sans-serif" font-size="160" font-weight="900" letter-spacing="-5">L</text>
+    <text x="1235" y="185" font-family="Impact, Arial Black, sans-serif" font-size="160" font-weight="900" letter-spacing="-5">I</text>
+    <text x="1350" y="180" font-family="Impact, Arial Black, sans-serif" font-size="160" font-weight="900" letter-spacing="-5">Z</text>
   </g>
   
   <!-- Símbolo registrado -->
-  <circle cx="1560" cy="60" r="20" fill="#DC2626" stroke="#FFFFFF" stroke-width="2"/>
-  <text x="1560" y="72" font-size="28" font-weight="900" fill="#FFFFFF" text-anchor="middle">®</text>
+  <circle cx="1540" cy="60" r="22" fill="#EF4444"/>
+  <text x="1540" y="73" font-size="30" font-weight="900" fill="#FFFFFF" text-anchor="middle">®</text>
   
   <!-- SABOR PARA SONREÍR -->
-  <text x="800" y="360" font-family="Impact, Arial Black, sans-serif" font-size="80" font-weight="900" text-anchor="middle" class="tagline-text" letter-spacing="12">SABOR PARA SONREÍR</text>
+  <text x="800" y="340" font-family="Impact, Arial Black, sans-serif" font-size="75" font-weight="900" text-anchor="middle" class="tagline-text" letter-spacing="10">SABOR PARA SONREÍR</text>
   
   <!-- Símbolo registrado para el tagline -->
-  <circle cx="1220" cy="345" r="15" fill="#000000"/>
-  <text x="1220" y="353" font-size="20" font-weight="900" fill="#FFFFFF" text-anchor="middle">®</text>
+  <circle cx="1210" cy="325" r="14" fill="#000000"/>
+  <text x="1210" y="335" font-size="18" font-weight="900" fill="#FFFFFF" text-anchor="middle">®</text>
 </svg>
