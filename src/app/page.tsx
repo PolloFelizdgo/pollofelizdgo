@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { SUCURSALES } from "./data/sucursales";
 import { GRADIENTS, MAP_SETTINGS } from "@/lib/constants";
 import { IMAGES } from "@/lib/cloudinary-images";
+import LazyLoad from "./componentes/LazyLoad";
 
 // Lazy load heavy components con loading states optimizados
 const PlatosGrid = dynamic(() => import("./componentes/PlatosGridClient"), {
@@ -37,6 +38,7 @@ const CombinacionSlider = dynamic(() => import("./componentes/CombinacionSlider"
 
 const PromoImage = dynamic(() => import("./componentes/PromoImage"), {
   loading: () => <div className="h-32 bg-gray-100 animate-pulse rounded-xl" />,
+  ssr: false,
 });
 
 const HomeInteractive = dynamic(() => import("./componentes/HomeInteractive"), {
@@ -153,9 +155,11 @@ export default function Home() {
           <div className="absolute inset-0 bg-black/10" />
         </div>
         <div className="max-w-7xl mx-auto px-4 relative z-10">
-          <div className={`bg-gradient-to-r ${GRADIENT_RED_ORANGE} rounded-[3rem] overflow-hidden shadow-2xl`}>
-            <CombinacionSlider />
-          </div>
+          <LazyLoad rootMargin="200px">
+            <div className={`bg-gradient-to-r ${GRADIENT_RED_ORANGE} rounded-[3rem] overflow-hidden shadow-2xl`}>
+              <CombinacionSlider />
+            </div>
+          </LazyLoad>
         </div>
       </section>
 
@@ -252,20 +256,22 @@ export default function Home() {
           {/* Mapa con sombra y bordes redondeados */}
           <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-100 p-2">
             <div className="rounded-2xl overflow-hidden">
-              <MapClient
-                locations={SUCURSALES.map((s) => ({ 
-                  lat: s.lat, 
-                  lng: s.lng, 
-                  name: s.name, 
-                  address: s.address, 
-                  hours: s.hours, 
-                  phone: s.phone, 
-                  extension: s.extension 
-                }))}
-                lat={MAP_SETTINGS.DEFAULT_LAT}
-                lng={MAP_SETTINGS.DEFAULT_LNG}
-                zoom={MAP_SETTINGS.DEFAULT_ZOOM}
-              />
+              <LazyLoad rootMargin="100px">
+                <MapClient
+                  locations={SUCURSALES.map((s) => ({ 
+                    lat: s.lat, 
+                    lng: s.lng, 
+                    name: s.name, 
+                    address: s.address, 
+                    hours: s.hours, 
+                    phone: s.phone, 
+                    extension: s.extension 
+                  }))}
+                  lat={MAP_SETTINGS.DEFAULT_LAT}
+                  lng={MAP_SETTINGS.DEFAULT_LNG}
+                  zoom={MAP_SETTINGS.DEFAULT_ZOOM}
+                />
+              </LazyLoad>
             </div>
           </div>
 

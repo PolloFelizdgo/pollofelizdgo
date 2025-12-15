@@ -12,11 +12,13 @@ import { IMAGES } from "@/lib/cloudinary-images";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: 'swap',
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
@@ -62,6 +64,9 @@ export default function RootLayout({
       <html lang="es-MX">
         <head>
           <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+          {/* Preconnect to Cloudinary for faster image loading */}
+          <link rel="preconnect" href="https://res.cloudinary.com" />
+          <link rel="dns-prefetch" href="https://res.cloudinary.com" />
           {/* Preload critical fonts (place WOFF2 files in /public/fonts/) */}
           <link rel="preload" href="/fonts/NEILVARD-One-Semibold.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
           <link rel="preload" href="/fonts/Brignell-Square-Bold.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
