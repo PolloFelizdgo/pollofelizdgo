@@ -76,14 +76,27 @@ export default function HomeClient() {
             </div>
 
             <h1 className="mb-8 leading-none animate-fade-in">
-              <div className="text-black font-black text-[56px] sm:text-[72px] md:text-[96px] lg:text-[120px] tracking-tighter mb-4 drop-shadow-2xl" style={{ fontFamily: 'var(--font-title)', textShadow: '4px 4px 0px rgba(220, 38, 38, 0.3), 8px 8px 0px rgba(234, 88, 12, 0.2)' }}>
-                POLLO <span className="text-red-600 italic relative">
-                  FELIZ
-                  <span className="absolute -top-4 -right-8 text-yellow-400 text-5xl animate-spin-slow">🌟</span>
-                </span>
+              {/* Logo estilo Pollo Feliz con contorno rojo y letras amarillas */}
+              <div className="inline-block relative">
+                <div 
+                  className="relative font-black text-[48px] sm:text-[64px] md:text-[88px] lg:text-[120px] tracking-wider"
+                  style={{ 
+                    fontFamily: 'Impact, "Arial Black", sans-serif',
+                    WebkitTextStroke: '8px #DC2626',
+                    paintOrder: 'stroke fill',
+                    color: '#FCD34D',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                    filter: 'drop-shadow(4px 4px 0px rgba(0,0,0,0.3))',
+                    lineHeight: '0.9'
+                  }}
+                >
+                  POLLO FELIZ
+                  <span className="absolute -top-2 -right-6 text-4xl md:text-5xl">®</span>
+                </div>
               </div>
-              <div className="text-red-600 font-black text-[32px] sm:text-[40px] md:text-[52px] tracking-tight italic drop-shadow-lg" style={{ fontFamily: 'var(--font-subtitle)' }}>
-                Durango
+              <div className="mt-4 text-black font-black text-[24px] sm:text-[32px] md:text-[40px] tracking-wider uppercase" style={{ fontFamily: 'Impact, "Arial Black", sans-serif', letterSpacing: '0.2em' }}>
+                Sabor para Sonreír®
               </div>
             </h1>
 

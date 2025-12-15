@@ -23,7 +23,7 @@ type LogoProps = {
  */
 export default function Logo({
   imgClassName = "w-20 h-20",
-  textClassName = "hidden md:inline-block ml-3 text-xl font-semibold text-gold",
+  textClassName = "hidden md:inline-block ml-3 text-xl font-semibold",
   showText = true,
 }: LogoProps) {
   return (
@@ -38,8 +38,24 @@ export default function Logo({
           sizes="(max-width: 768px) 80px, 80px"
         />
       </div>
-      {/* Nombre de la marca (solo visible en pantallas md+) */}
-      {showText && <span className={textClassName}>Pollo Feliz</span>}
+      {/* Nombre de la marca estilo oficial */}
+      {showText && (
+        <span 
+          className={textClassName}
+          style={{ 
+            fontFamily: 'Impact, "Arial Black", sans-serif',
+            WebkitTextStroke: '2px #DC2626',
+            paintOrder: 'stroke fill',
+            color: '#FCD34D',
+            textTransform: 'uppercase',
+            letterSpacing: '0.05em',
+            fontSize: '1.5rem',
+            fontWeight: 900
+          }}
+        >
+          POLLO FELIZ
+        </span>
+      )}
     </Link>
   );
 }
