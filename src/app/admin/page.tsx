@@ -266,6 +266,39 @@ export default function AdminPanel() {
     });
   };
 
+  const handleSync = async () => {
+    if (!confirm('¿Guardar cambios y subir a GitHub?\n\nEsto hará commit y push de los cambios del menú.')) {
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/sync', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          message: 'Update: Cambios del menú desde admin panel' 
+        })
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        if (data.skipped) {
+          setMessage({ type: 'error', text: '⚠️ No hay cambios para guardar' });
+        } else {
+          setMessage({ 
+            type: 'success', 
+            text: '✅ Cambios guardados en GitHub. Se desplegarán automáticamente en Vercel.' 
+          });
+        }
+      } else {
+        setMessage({ type: 'error', text: `❌ ${data.error}` });
+      }
+    } catch (error: any) {
+      setMessage({ type: 'error', text: `❌ Error: ${error.message}` });
+    }
+  };
+
   // Login screen
   if (!isAuthenticated) {
     return (
@@ -325,6 +358,16 @@ export default function AdminPanel() {
               className="px-4 py-2 text-gray-700 hover:text-gray-900 transition-colors"
             >
               Ver Sitio
+            </button>
+            <button
+              onClick={handleSync}
+              className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center gap-2"
+              title="Guardar cambios y subir a GitHub"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+              </svg>
+              Subir Cambios
             </button>
             <button
               onClick={handleLogout}
