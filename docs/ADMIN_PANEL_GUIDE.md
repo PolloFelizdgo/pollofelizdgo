@@ -45,18 +45,20 @@ El panel tiene 3 secciones principales:
 | **Categoría** | Tipo de producto | Selecciona del menú | ✅ Sí |
 | **Imagen** | Foto del producto | Sube archivo o pega URL | ✅ Sí |
 
-### Paso 3: Subir Imagen
+### Paso 3: Subir Imagen (REQUERIDO)
 
-**Opción A: Subir desde tu computadora** (RECOMENDADO)
-1. Clic en **"Elegir archivo"**
-2. Selecciona la foto del producto
-3. Espera a que diga "Imagen subida exitosamente"
-4. ✅ Listo, el path se llena automáticamente
+**Cómo subir la imagen**:
+1. Clic en **"Sube una imagen"** en el área de drag & drop
+2. Selecciona la foto del producto (JPG, PNG o WEBP)
+3. Espera a que aparezca ✅ "Imagen subida exitosamente"
+4. Verás el preview de la imagen
+5. ✅ Listo, puedes continuar
 
-**Opción B: Usar imagen ya subida**
-1. Si ya tienes la imagen en Cloudinary
-2. Pega el path en el campo de texto
-3. Ejemplo: `pollo-feliz/menu/mi-producto`
+**Validaciones automáticas**:
+- ✅ Solo acepta JPG, PNG, WEBP
+- ✅ Tamaño máximo: 5MB
+- ✅ Sube directo a Cloudinary
+- ✅ Preview inmediato
 
 ### Paso 4: Opciones Extra
 - ✅ **Más vendido**: Marca si es un bestseller
@@ -103,11 +105,13 @@ El panel tiene 3 secciones principales:
 - ✅ JPG / JPEG
 - ✅ PNG
 - ✅ WebP
+- ❌ GIF, SVG, BMP (no soportados)
 
-### Tamaño Recomendado
-- **Ancho**: 1200px
-- **Alto**: 900px
-- **Peso**: Máximo 2MB
+### Tamaño y Límites
+- **Ancho recomendado**: 1200px
+- **Alto recomendado**: 900px
+- **Peso máximo**: 5MB (el sistema lo valida)
+- **Validación**: Automática antes de subir
 
 ### Tips para Buenas Fotos
 1. ✅ Usa buena iluminación
@@ -169,13 +173,19 @@ El panel tiene 3 secciones principales:
 ### "Error al subir imagen"
 **Posibles causas**:
 - Archivo muy pesado (más de 5MB)
-- Formato no soportado
+- Formato no soportado (solo JPG, PNG, WEBP)
 - Conexión a internet lenta
+- Credenciales de Cloudinary no configuradas
 
 **Solución**:
-- Reduce el tamaño de la imagen
-- Usa JPG en vez de PNG
-- Intenta de nuevo
+- Verifica el tamaño: debe ser menor a 5MB
+- Usa JPG (más ligero que PNG)
+- Verifica tu conexión a internet
+- Contacta al administrador si persiste
+
+**El sistema te mostrará el error específico**:
+- "Solo se permiten imágenes JPG, PNG o WEBP"
+- "La imagen no debe superar 5MB"
 
 ### "El ID ya existe"
 **Causa**: Ya hay un producto con ese ID

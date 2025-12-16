@@ -85,6 +85,22 @@ export default function AdminPanel() {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    // Validar tipo de archivo
+    const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+    if (!validTypes.includes(file.type)) {
+      setMessage({ type: 'error', text: 'Solo se permiten imágenes JPG, PNG o WEBP' });
+      e.target.value = ''; // Limpiar input
+      return;
+    }
+
+    // Validar tamaño (máximo 5MB)
+    const maxSize = 5 * 1024 * 1024; // 5MB en bytes
+    if (file.size > maxSize) {
+      setMessage({ type: 'error', text: 'La imagen no debe superar 5MB' });
+      e.target.value = ''; // Limpiar input
+      return;
+    }
+
     setUploadingImage(true);
     const formDataUpload = new FormData();
     formDataUpload.append('file', file);
@@ -99,12 +115,14 @@ export default function AdminPanel() {
       
       if (data.success) {
         setFormData(prev => ({ ...prev, cloudinaryPath: data.cloudinaryPath }));
-        setMessage({ type: 'success', text: 'Imagen subida exitosamente' });
+        setMessage({ type: 'success', text: '✅ Imagen subida exitosamente' });
+        // Limpiar el input para permitir subir la misma imagen de nuevo si se borra
+        e.target.value = '';
       } else {
-        setMessage({ type: 'error', text: data.error });
+        setMessage({ type: 'error', text: data.error || 'Error al subir imagen' });
       }
     } catch (error) {
-      setMessage({ type: 'error', text: 'Error al subir imagen' });
+      setMessage({ type: 'error', text: 'Error al subir imagen. Verifica tu conexión.' });
     } finally {
       setUploadingImage(false);
     }
@@ -112,6 +130,18 @@ export default function AdminPanel() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validar que haya imagen al crear producto nuevo
+    if (!editingProduct && !formData.cloudinaryPath) {
+      setMessage({ type: 'error', text: '⚠️ Debes subir una imagen del producto' });
+      return;
+    }
+
+    // Validar campos requeridos
+    if (!formData.id || !formData.name || !formData.category) {
+      setMessage({ type: 'error', text: '⚠️ Completa todos los campos requeridos (*)' });
+      return;
+    }
     
     const method = editingProduct ? 'PUT' : 'POST';
     
@@ -125,14 +155,14 @@ export default function AdminPanel() {
       const data = await res.json();
       
       if (data.success) {
-        setMessage({ type: 'success', text: data.message });
+        setMessage({ type: 'success', text: '✅ ' + data.message });
         loadProducts();
         handleCancel();
       } else {
-        setMessage({ type: 'error', text: data.error });
+        setMessage({ type: 'error', text: '❌ ' + data.error });
       }
     } catch (error) {
-      setMessage({ type: 'error', text: 'Error al guardar producto' });
+      setMessage({ type: 'error', text: '❌ Error al guardar producto' });
     }
   };
 
@@ -356,34 +386,63 @@ export default function AdminPanel() {
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Imagen *</label>
-                <div className="flex gap-3">
-                  <input
-                    type="file"
-                    onChange={handleImageUpload}
-                    accept="image/*"
-                    className="flex-1 px-3 py-2 border rounded-lg"
-                    disabled={uploadingImage}
-                  />
-                  <input
-                    type="text"
-                    value={formData.cloudinaryPath}
-                    onChange={(e) => setFormData(prev => ({ ...prev, cloudinaryPath: e.target.value }))}
-                    className="flex-1 px-3 py-2 border rounded-lg"
-                    placeholder="O pega el path de Cloudinary"
-                  />
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Imagen * 
+                  <span className="text-xs text-gray-500 ml-2">(Recomendado: 1200x900px, máx 5MB)</span>
+                </label>
+                <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-500 transition-colors">
+                  {formData.cloudinaryPath ? (
+                    <div className="space-y-3">
+                      <div className="relative w-48 h-36 mx-auto">
+                        <Image
+                          src={`https://res.cloudinary.com/dw55kbkmn/image/upload/c_fill,w_400,h_300/${formData.cloudinaryPath}`}
+                          alt="Preview"
+                          fill
+                          className="object-cover rounded-lg"
+                        />
+                      </div>
+                      <div className="text-sm text-gray-600 break-all">
+                        {formData.cloudinaryPath.split('/').pop()}
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setFormData(prev => ({ ...prev, cloudinaryPath: '' }))}
+                        className="text-red-600 hover:text-red-700 text-sm underline"
+                      >
+                        Eliminar y cambiar imagen
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      <svg className="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                      <div className="flex text-sm text-gray-600">
+                        <label htmlFor="file-upload" className="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none">
+                          <span>Sube una imagen</span>
+                          <input
+                            id="file-upload"
+                            name="file-upload"
+                            type="file"
+                            className="sr-only"
+                            accept="image/jpeg,image/jpg,image/png,image/webp"
+                            onChange={handleImageUpload}
+                            disabled={uploadingImage}
+                            required={!editingProduct}
+                          />
+                        </label>
+                        <p className="pl-1">o arrastra y suelta</p>
+                      </div>
+                      <p className="text-xs text-gray-500">PNG, JPG, WEBP hasta 5MB</p>
+                      {uploadingImage && (
+                        <div className="flex items-center justify-center gap-2">
+                          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600"></div>
+                          <span className="text-sm text-blue-600">Subiendo imagen...</span>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
-                {uploadingImage && <p className="text-sm text-blue-600 mt-1">Subiendo imagen...</p>}
-                {formData.cloudinaryPath && (
-                  <div className="mt-2 relative w-32 h-24">
-                    <Image
-                      src={`https://res.cloudinary.com/dw55kbkmn/image/upload/c_fill,w_200,h_150/${formData.cloudinaryPath}`}
-                      alt="Preview"
-                      fill
-                      className="object-cover rounded"
-                    />
-                  </div>
-                )}
               </div>
 
               <div className="flex items-center gap-4">
