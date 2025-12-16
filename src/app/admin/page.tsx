@@ -132,12 +132,17 @@ export default function AdminPanel() {
       
       console.log('📥 Respuesta del servidor:', res.status, res.statusText);
       
+      if (!res.ok) {
+        console.error('❌ Respuesta no OK:', res.status);
+      }
+      
       const data = await res.json();
       console.log('📦 Data recibida:', data);
       
       if (data.success) {
         setFormData(prev => ({ ...prev, cloudinaryPath: data.cloudinaryPath }));
         setMessage({ type: 'success', text: '✅ Imagen subida exitosamente' });
+        console.log('✅ Imagen guardada en state:', data.cloudinaryPath);
         // Limpiar el input para permitir subir la misma imagen de nuevo si se borra
         e.target.value = '';
       } else {
@@ -148,11 +153,21 @@ export default function AdminPanel() {
         setMessage({ type: 'error', text: `❌ ${errorMsg}` });
         
         // Log para debugging
-        console.error('Error al subir imagen:', data);
+        console.error('❌ Error del servidor:', data);
       }
-    } catch (error) {
-      console.error('Error de red:', error);
-      setMessage({ type: 'error', text: '❌ Error de conexión. Verifica tu internet o las credenciales de Cloudinary.' });
+    } catch (error: any) {
+      console.error('❌ Error capturado:', error);
+      console.error('Tipo de error:', error.name);
+      console.error('Mensaje:', error.message);
+      
+      let errorText = 'Error desconocido';
+      if (error.name === 'TypeError' && error.message.includes('fetch')) {
+        errorText = 'No se puede conectar al servidor. ¿Está corriendo en localhost:3000?';
+      } else if (error.message) {
+        errorText = error.message;
+      }
+      
+      setMessage({ type: 'error', text: `❌ ${errorText}` });
     } finally {
       setUploadingImage(false);
     }
