@@ -110,7 +110,7 @@ El panel tiene 3 secciones principales:
 ### Tamaño y Límites
 - **Ancho recomendado**: 1200px
 - **Alto recomendado**: 900px
-- **Peso máximo**: 5MB (el sistema lo valida)
+- **Peso máximo**: 50MB (el sistema lo valida)
 - **Validación**: Automática antes de subir
 
 ### Tips para Buenas Fotos
@@ -172,20 +172,20 @@ El panel tiene 3 secciones principales:
 
 ### "Error al subir imagen"
 **Posibles causas**:
-- Archivo muy pesado (más de 5MB)
+- Archivo muy pesado (más de 50MB)
 - Formato no soportado (solo JPG, PNG, WEBP)
 - Conexión a internet lenta
 - Credenciales de Cloudinary no configuradas
 
 **Solución**:
-- Verifica el tamaño: debe ser menor a 5MB
+- Verifica el tamaño: debe ser menor a 50MB
 - Usa JPG (más ligero que PNG)
 - Verifica tu conexión a internet
 - Contacta al administrador si persiste
 
 **El sistema te mostrará el error específico**:
 - "Solo se permiten imágenes JPG, PNG o WEBP"
-- "La imagen no debe superar 5MB"
+- "La imagen no debe superar 50MB"
 
 ### "El ID ya existe"
 **Causa**: Ya hay un producto con ese ID

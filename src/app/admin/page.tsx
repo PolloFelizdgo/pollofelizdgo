@@ -93,10 +93,10 @@ export default function AdminPanel() {
       return;
     }
 
-    // Validar tamaño (máximo 5MB)
-    const maxSize = 5 * 1024 * 1024; // 5MB en bytes
+    // Validar tamaño (máximo 50MB)
+    const maxSize = 50 * 1024 * 1024; // 50MB en bytes
     if (file.size > maxSize) {
-      setMessage({ type: 'error', text: 'La imagen no debe superar 5MB' });
+      setMessage({ type: 'error', text: 'La imagen no debe superar 50MB' });
       e.target.value = ''; // Limpiar input
       return;
     }
@@ -388,7 +388,7 @@ export default function AdminPanel() {
               <div className="md:col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Imagen * 
-                  <span className="text-xs text-gray-500 ml-2">(Recomendado: 1200x900px, máx 5MB)</span>
+                  <span className="text-xs text-gray-500 ml-2">(Recomendado: 1200x900px, máx 50MB)</span>
                 </label>
                 <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-500 transition-colors">
                   {formData.cloudinaryPath ? (
@@ -433,7 +433,7 @@ export default function AdminPanel() {
                         </label>
                         <p className="pl-1">o arrastra y suelta</p>
                       </div>
-                      <p className="text-xs text-gray-500">PNG, JPG, WEBP hasta 5MB</p>
+                      <p className="text-xs text-gray-500">PNG, JPG, WEBP hasta 50MB</p>
                       {uploadingImage && (
                         <div className="flex items-center justify-center gap-2">
                           <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600"></div>
