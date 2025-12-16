@@ -123,9 +123,10 @@ export default function AdminPanel() {
     formDataUpload.append('folder', 'pollo-feliz/menu');
 
     console.log('📤 Iniciando upload:', file.name, `(${(file.size / 1024 / 1024).toFixed(2)}MB)`);
+    console.log('🔍 Usando endpoint de prueba: /api/test-upload');
 
     try {
-      const res = await fetch('/api/upload', {
+      const res = await fetch('/api/test-upload', {
         method: 'POST',
         body: formDataUpload
       });
