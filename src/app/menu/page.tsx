@@ -7,9 +7,8 @@ import { CLOUDINARY_CONFIG } from "@/lib/cloudinary-images";
 
 /*
   Página: /menu
-  Propósito: catálogo visual de productos. Mantener este archivo limpio de lógica de negocio (usa `PLATOS` como fuente de datos).
-  Imagenes: cambiar `imageBase` en `src/app/componentes/PlatosGrid.tsx` y subir variantes a `public/imagenes/` (ej. -320, -640, original).
-  Consejo de optimización: generar variantes con `scripts/generate-images.js` y reiniciar dev server si actualizas `tailwind.config.js`.
+  Propósito: catálogo visual de productos dinámico desde API /api/menu
+  Los cambios del admin se reflejan automáticamente aquí
 */
 
 export default function MenuPage() {
@@ -20,6 +19,43 @@ export default function MenuPage() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [minPrice, setMinPrice] = useState<number | ''>('');
   const [maxPrice, setMaxPrice] = useState<number | ''>('');
+  const [products, setProducts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Cargar productos desde la API
+  useEffect(() => {
+    const loadProducts = async () => {
+      try {
+        const res = await fetch('/api/menu', { cache: 'no-store' });
+        const data = await res.json();
+        if (data.success && data.products.length > 0) {
+          // Convertir formato API a formato PLATOS
+          const formattedProducts = data.products
+            .filter((p: any) => p.available !== false)
+            .map((p: any) => ({
+              id: p.id,
+              name: p.name,
+              desc: p.description || '',
+              price: p.price ? parseFloat(p.price) : null,
+              image: p.cloudinaryPath || '',
+              category: p.category || 'Otros',
+              bestseller: p.bestseller || false
+            }));
+          setProducts(formattedProducts);
+        } else {
+          // Fallback a datos estáticos si API falla o está vacía
+          setProducts(PLATOS);
+        }
+      } catch (error) {
+        console.error('Error cargando productos:', error);
+        setProducts(PLATOS); // Fallback a datos estáticos
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    loadProducts();
+  }, []);
 
   useEffect(() => {
     setMounted(true);
@@ -27,13 +63,13 @@ export default function MenuPage() {
 
   // Memoizar categorías para evitar recalcular en cada render
   const categories = useMemo(() => 
-    Array.from(new Set(PLATOS.map((p) => p.category || "Otros"))), 
-    []
+    Array.from(new Set(products.map((p) => p.category || "Otros"))), 
+    [products]
   );
 
   // Memoizar lista filtrada para evitar filtrado en cada render
   const filtered = useMemo(() => {
-    return PLATOS.filter((p) => {
+    return products.filter((p) => {
       // Search by name or description
       const q = query.trim().toLowerCase();
       if (q) {
@@ -70,6 +106,17 @@ export default function MenuPage() {
   const handleOpenModal = useCallback((src: string, title: string) => {
     setModal({ src, title });
   }, []);
+
+  if (loading) {
+    return (
+      <main className="relative overflow-hidden min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-orange-500 mx-auto mb-4"></div>
+          <p className="text-gray-600">Cargando menú...</p>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="relative overflow-hidden">
