@@ -25,6 +25,13 @@ export const TYPOGRAPHY = {
   HEADING_MD: 'text-3xl md:text-4xl',
 } as const;
 
+// Cloudinary Configuration
+export const CLOUDINARY = {
+  CLOUD_NAME: 'dw55kbkmn',
+  BASE_URL: 'https://res.cloudinary.com/dw55kbkmn',
+  API_KEY: '979973118959516',
+} as const;
+
 // Business Info
 export const BUSINESS_INFO = {
   NAME: 'Pollo Feliz',
