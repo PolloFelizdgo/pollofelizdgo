@@ -89,9 +89,20 @@ export default function AdminPanel() {
       const data = await res.json();
       if (data.success) {
         setProducts(data.products);
+        
+        // Mostrar advertencia si está en Vercel (modo solo lectura)
+        if (data.warning) {
+          setMessage({ 
+            type: 'error', 
+            text: `⚠️ ${data.warning}. Usa el sitio en desarrollo (localhost) para gestionar productos.` 
+          });
+        }
+      } else {
+        setMessage({ type: 'error', text: `❌ ${data.error}` });
       }
-    } catch (error) {
-      setMessage({ type: 'error', text: 'Error al cargar productos' });
+    } catch (error: any) {
+      console.error('Error al cargar productos:', error);
+      setMessage({ type: 'error', text: `❌ Error al cargar productos: ${error.message}` });
     } finally {
       setLoading(false);
     }

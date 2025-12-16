@@ -7,8 +7,22 @@ const MENU_FILE = path.join(process.cwd(), 'data', 'menu.json');
 // GET - Obtener todos los productos del menú
 export async function GET() {
   try {
-    const data = await fs.readFile(MENU_FILE, 'utf8');
-    const menu = JSON.parse(data);
+    // Intentar leer el archivo
+    let menu;
+    try {
+      const data = await fs.readFile(MENU_FILE, 'utf8');
+      menu = JSON.parse(data);
+    } catch (readError) {
+      // Si falla (como en Vercel), retornar estructura vacía
+      console.warn('No se pudo leer menu.json, retornando estructura vacía');
+      return NextResponse.json({ 
+        success: true, 
+        products: [],
+        version: '1.0.0',
+        lastUpdated: new Date().toISOString(),
+        warning: 'Modo solo lectura - los cambios no se guardarán'
+      });
+    }
     
     // Convertir a array plano para facilitar gestión
     const products: any[] = [];
@@ -29,9 +43,10 @@ export async function GET() {
       version: menu.version,
       lastUpdated: menu.lastUpdated
     });
-  } catch (error) {
+  } catch (error: any) {
+    console.error('Error en GET /api/menu:', error);
     return NextResponse.json(
-      { success: false, error: 'Error al leer el menú' },
+      { success: false, error: error.message || 'Error al leer el menú' },
       { status: 500 }
     );
   }
