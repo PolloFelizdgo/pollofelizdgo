@@ -73,11 +73,16 @@ export default function AdminPanel() {
       const checkRes = await fetch('/api/cloudinary/check');
       const checkData = await checkRes.json();
       
+      console.log('🔍 Cloudinary check:', checkData);
+      
       if (!checkData.success) {
+        console.error('❌ Configuración de Cloudinary:', checkData.message);
         setMessage({ 
           type: 'error', 
           text: `⚠️ ${checkData.message}. La subida de imágenes no funcionará.` 
         });
+      } else {
+        console.log('✅ Cloudinary configurado correctamente');
       }
 
       const res = await fetch('/api/menu');
@@ -117,13 +122,18 @@ export default function AdminPanel() {
     formDataUpload.append('file', file);
     formDataUpload.append('folder', 'pollo-feliz/menu');
 
+    console.log('📤 Iniciando upload:', file.name, `(${(file.size / 1024 / 1024).toFixed(2)}MB)`);
+
     try {
       const res = await fetch('/api/upload', {
         method: 'POST',
         body: formDataUpload
       });
       
+      console.log('📥 Respuesta del servidor:', res.status, res.statusText);
+      
       const data = await res.json();
+      console.log('📦 Data recibida:', data);
       
       if (data.success) {
         setFormData(prev => ({ ...prev, cloudinaryPath: data.cloudinaryPath }));
