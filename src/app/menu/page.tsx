@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import Section from "../componentes/Section";
 import { PLATOS } from "../data/platos";
 import Image from "next/image";
@@ -25,24 +25,51 @@ export default function MenuPage() {
     setMounted(true);
   }, []);
 
-  const categories = Array.from(new Set(PLATOS.map((p) => p.category || "Otros")));
+  // Memoizar categorías para evitar recalcular en cada render
+  const categories = useMemo(() => 
+    Array.from(new Set(PLATOS.map((p) => p.category || "Otros"))), 
+    []
+  );
 
-  // Filtered list based on query, category and price range
-  const filtered = PLATOS.filter((p) => {
-    // Search by name or description
-    const q = query.trim().toLowerCase();
-    if (q) {
-      const inName = p.name.toLowerCase().includes(q);
-      const inDesc = (p.desc || "").toLowerCase().includes(q);
-      if (!inName && !inDesc) return false;
-    }
-    if (selectedCategory && selectedCategory !== "Todos") {
-      if ((p.category || "") !== selectedCategory) return false;
-    }
-    if (minPrice !== '' && (p.price == null || p.price < minPrice)) return false;
-    if (maxPrice !== '' && (p.price == null || p.price > maxPrice)) return false;
-    return true;
-  });
+  // Memoizar lista filtrada para evitar filtrado en cada render
+  const filtered = useMemo(() => {
+    return PLATOS.filter((p) => {
+      // Search by name or description
+      const q = query.trim().toLowerCase();
+      if (q) {
+        const inName = p.name.toLowerCase().includes(q);
+        const inDesc = (p.desc || "").toLowerCase().includes(q);
+        if (!inName && !inDesc) return false;
+      }
+      if (selectedCategory && selectedCategory !== "Todos") {
+        if ((p.category || "") !== selectedCategory) return false;
+      }
+      if (minPrice !== '' && (p.price == null || p.price < minPrice)) return false;
+      if (maxPrice !== '' && (p.price == null || p.price > maxPrice)) return false;
+      return true;
+    });
+  }, [query, selectedCategory, minPrice, maxPrice]);
+
+  // Callbacks memoizados para handlers
+  const handleClearFilters = useCallback(() => {
+    setQuery('');
+    setSelectedCategory(null);
+    setMinPrice('');
+    setMaxPrice('');
+    setVisible(9);
+  }, []);
+
+  const handleShowMore = useCallback(() => {
+    setVisible((v) => Math.min(filtered.length, v + 9));
+  }, [filtered.length]);
+
+  const handleCloseModal = useCallback(() => {
+    setModal(null);
+  }, []);
+
+  const handleOpenModal = useCallback((src: string, title: string) => {
+    setModal({ src, title });
+  }, []);
 
   return (
     <main className="relative overflow-hidden">
@@ -112,7 +139,7 @@ export default function MenuPage() {
         </div>
 
         <div className="mb-4 flex items-center gap-3">
-          <button onClick={() => { setQuery(''); setSelectedCategory(null); setMinPrice(''); setMaxPrice(''); setVisible(9); }} className="px-3 py-2 rounded bg-slate-100">Limpiar filtros</button>
+          <button onClick={handleClearFilters} className="px-3 py-2 rounded bg-slate-100 hover:bg-slate-200 transition-colors">Limpiar filtros</button>
           <div className="text-sm text-slate-600">Mostrando {filtered.length} resultados</div>
         </div>
 
@@ -158,7 +185,7 @@ export default function MenuPage() {
 
                     <div className="mt-4 flex items-center justify-between">
                     <div className="text-sm text-slate-500">{p.category}</div>
-                    <button className="text-sm px-3 py-1 rounded cta-primary" style={{ backgroundColor: 'var(--accent)', color: 'white' }} onClick={() => setModal({ src: p.imageBase, title: p.name })}>Ver</button>
+                    <button className="text-sm px-3 py-1 rounded cta-primary transition-transform hover:scale-105" style={{ backgroundColor: 'var(--accent)', color: 'white' }} onClick={() => handleOpenModal(p.imageBase, p.name)}>Ver</button>
                   </div>
                 </div>
               </article>
@@ -168,17 +195,17 @@ export default function MenuPage() {
 
         {visible < filtered.length && (
           <div className="mt-6 text-center">
-            <button onClick={() => setVisible((v) => Math.min(filtered.length, v + 9))} className="px-4 py-2 rounded" style={{ backgroundColor: 'var(--accent)', color: 'white' }}>Mostrar más</button>
+            <button onClick={handleShowMore} className="px-4 py-2 rounded transition-transform hover:scale-105" style={{ backgroundColor: 'var(--accent)', color: 'white' }}>Mostrar más</button>
           </div>
         )}
 
         {/* Modal (visual) */}
         {modal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4" onClick={() => setModal(null)}>
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4" onClick={handleCloseModal}>
             <div className="max-w-3xl w-full bg-white rounded-md overflow-hidden" onClick={(e) => e.stopPropagation()}>
               <div className="p-4 flex items-center justify-between border-b">
                 <h4 className="text-lg font-medium">{modal.title}</h4>
-                <button className="text-slate-600" onClick={() => setModal(null)} aria-label="Cerrar">✕</button>
+                <button className="text-slate-600 hover:text-slate-900 transition-colors" onClick={handleCloseModal} aria-label="Cerrar">✕</button>
               </div>
               <div className="relative w-full h-[60vh] bg-slate-100">
                 <Image 

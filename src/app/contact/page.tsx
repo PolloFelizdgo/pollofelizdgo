@@ -13,13 +13,13 @@ export default function ContactPage() {
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-red-200/20 rounded-full blur-3xl animate-pulse" style={{animationDelay: '2s'}} />
       </div>
 
-      <div className="mx-auto max-w-[1400px] py-20 px-4">
-        {/* Contenedor del formulario - Diseño mejorado y más grande */}
-        <div className="bg-white rounded-3xl overflow-hidden border-2 border-gray-200 shadow-2xl hover:shadow-3xl transition-shadow duration-300">
+      <div className="mx-auto max-w-2xl py-20 px-4">
+        {/* Contenedor del formulario - Diseño cuadrado y compacto */}
+        <div className="bg-white rounded-2xl overflow-hidden border-2 border-gray-200 shadow-2xl hover:shadow-3xl transition-shadow duration-300">
           {/* iframe del formulario */}
-          <div className="p-4 md:p-6 bg-gradient-to-b from-white to-gray-50">
+          <div className="p-4 bg-gradient-to-b from-white to-gray-50">
             <iframe
-              className="border-none w-full h-[1400px] rounded-2xl shadow-inner"
+              className="border-none w-full h-[700px] rounded-xl shadow-inner"
               id="contact-form-exuvpi"
               src={OPNFORM_URL}
               title="Formulario de contacto Pollo Feliz"

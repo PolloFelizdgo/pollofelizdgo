@@ -97,7 +97,8 @@ export default function CombinacionSlider() {
     setMounted(true);
   }, []);
 
-  const startInterval = useCallback(() => {
+  // Función para reiniciar el intervalo al interactuar
+  const resetInterval = useCallback(() => {
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
     }
@@ -111,36 +112,42 @@ export default function CombinacionSlider() {
     if (isAnimating) return;
     setIsAnimating(true);
     setCurrentSlide((prev) => (prev + 1) % slides.length);
-    setTimeout(() => setIsAnimating(false), 1000);
-    startInterval();
-  }, [isAnimating, startInterval]);
+    setTimeout(() => setIsAnimating(false), 500); // Reducido de 1000ms a 500ms
+    resetInterval();
+  }, [isAnimating, resetInterval]);
 
   const handlePrev = useCallback(() => {
     if (isAnimating) return;
     setIsAnimating(true);
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
-    setTimeout(() => setIsAnimating(false), 1000);
-    startInterval();
-  }, [isAnimating, startInterval]);
+    setTimeout(() => setIsAnimating(false), 500); // Reducido de 1000ms a 500ms
+    resetInterval();
+  }, [isAnimating, resetInterval]);
 
   const handleDotClick = useCallback((index: number) => {
     if (isAnimating || index === currentSlide) return;
     setIsAnimating(true);
     setCurrentSlide(index);
-    setTimeout(() => setIsAnimating(false), 1000);
-    startInterval();
-  }, [isAnimating, currentSlide, startInterval]);
+    setTimeout(() => setIsAnimating(false), 500); // Reducido de 1000ms a 500ms
+    resetInterval();
+  }, [isAnimating, currentSlide, resetInterval]);
 
+  // Optimización: Un solo efecto para manejar el intervalo
   useEffect(() => {
     if (!mounted) return;
-    startInterval();
+    
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 5000);
+    
+    intervalRef.current = interval;
 
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
       }
     };
-  }, [mounted, startInterval]);
+  }, [mounted]);
 
   const slide = slides[currentSlide];
 
