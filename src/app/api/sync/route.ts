@@ -26,8 +26,7 @@ export async function POST(request: Request) {
       env: {
         ...process.env,
         PATH: `${process.env.PATH};C:\\Program Files\\Git\\cmd;C:\\Program Files\\Git\\bin`
-      },
-      shell: true
+      }
     };
     
     // Git add
