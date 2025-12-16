@@ -69,6 +69,17 @@ export default function AdminPanel() {
 
   const loadProducts = async () => {
     try {
+      // Verificar configuración de Cloudinary
+      const checkRes = await fetch('/api/cloudinary/check');
+      const checkData = await checkRes.json();
+      
+      if (!checkData.success) {
+        setMessage({ 
+          type: 'error', 
+          text: `⚠️ ${checkData.message}. La subida de imágenes no funcionará.` 
+        });
+      }
+
       const res = await fetch('/api/menu');
       const data = await res.json();
       if (data.success) {
@@ -111,6 +122,7 @@ export default function AdminPanel() {
         method: 'POST',
         body: formDataUpload
       });
+      
       const data = await res.json();
       
       if (data.success) {
@@ -119,10 +131,18 @@ export default function AdminPanel() {
         // Limpiar el input para permitir subir la misma imagen de nuevo si se borra
         e.target.value = '';
       } else {
-        setMessage({ type: 'error', text: data.error || 'Error al subir imagen' });
+        // Mostrar error detallado
+        const errorMsg = data.details 
+          ? `${data.error}: ${data.details}` 
+          : data.error || 'Error al subir imagen';
+        setMessage({ type: 'error', text: `❌ ${errorMsg}` });
+        
+        // Log para debugging
+        console.error('Error al subir imagen:', data);
       }
     } catch (error) {
-      setMessage({ type: 'error', text: 'Error al subir imagen. Verifica tu conexión.' });
+      console.error('Error de red:', error);
+      setMessage({ type: 'error', text: '❌ Error de conexión. Verifica tu internet o las credenciales de Cloudinary.' });
     } finally {
       setUploadingImage(false);
     }
