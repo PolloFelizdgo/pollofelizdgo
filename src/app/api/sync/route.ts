@@ -12,6 +12,15 @@ const getGitCommand = () => {
 // POST - Hacer commit y push de los cambios
 export async function POST(request: Request) {
   try {
+    // En producción (Vercel), git no está disponible y no es necesario
+    if (process.env.VERCEL) {
+      return NextResponse.json({
+        success: false,
+        error: 'Git sync no disponible en producción',
+        hint: 'Los cambios se actualizan automáticamente al hacer push desde localhost'
+      }, { status: 400 });
+    }
+
     const { message } = await request.json();
     const commitMessage = message || 'Update: Cambios desde admin panel';
     const git = getGitCommand();
