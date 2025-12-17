@@ -1,27 +1,48 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs/promises';
 import path from 'path';
+import { getMenuFromGitHub, updateMenuInGitHub, isProduction, isGitHubConfigured } from '@/lib/github';
 
 const MENU_FILE = path.join(process.cwd(), 'data', 'menu.json');
 
 // GET - Obtener todos los productos del menú
 export async function GET() {
   try {
-    // Intentar leer el archivo
     let menu;
-    try {
-      const data = await fs.readFile(MENU_FILE, 'utf8');
-      menu = JSON.parse(data);
-    } catch (readError) {
-      // Si falla (como en Vercel), retornar estructura vacía
-      console.warn('No se pudo leer menu.json, retornando estructura vacía');
-      return NextResponse.json({ 
-        success: true, 
-        products: [],
-        version: '1.0.0',
-        lastUpdated: new Date().toISOString(),
-        warning: 'Modo solo lectura - los cambios no se guardarán'
-      });
+    
+    // En producción, leer desde GitHub
+    if (isProduction && isGitHubConfigured()) {
+      try {
+        const { menu: githubMenu } = await getMenuFromGitHub();
+        menu = githubMenu;
+      } catch (githubError) {
+        console.error('Error leyendo desde GitHub:', githubError);
+        // Fallback: intentar leer local
+        try {
+          const data = await fs.readFile(MENU_FILE, 'utf8');
+          menu = JSON.parse(data);
+        } catch {
+          return NextResponse.json({ 
+            success: true, 
+            products: [],
+            warning: 'No se pudo cargar el menú'
+          });
+        }
+      }
+    } else {
+      // En desarrollo, leer archivo local
+      try {
+        const data = await fs.readFile(MENU_FILE, 'utf8');
+        menu = JSON.parse(data);
+      } catch (readError) {
+        console.warn('No se pudo leer menu.json local');
+        return NextResponse.json({ 
+          success: true, 
+          products: [],
+          version: '1.0.0',
+          lastUpdated: new Date().toISOString()
+        });
+      }
     }
     
     // Convertir a array plano para facilitar gestión
@@ -65,8 +86,15 @@ export async function POST(request: Request) {
       );
     }
     
-    const data = await fs.readFile(MENU_FILE, 'utf8');
-    const menu = JSON.parse(data);
+    // Obtener menú según el entorno
+    let menu;
+    if (isProduction && isGitHubConfigured()) {
+      const { menu: githubMenu } = await getMenuFromGitHub();
+      menu = githubMenu;
+    } else {
+      const data = await fs.readFile(MENU_FILE, 'utf8');
+      menu = JSON.parse(data);
+    }
     
     // Determinar la categoría en el JSON
     const categoryKey = newProduct.categoryKey || 'complementos';
@@ -100,16 +128,30 @@ export async function POST(request: Request) {
     menu.menu[categoryKey].push(productData);
     menu.lastUpdated = new Date().toISOString().split('T')[0];
     
-    await fs.writeFile(MENU_FILE, JSON.stringify(menu, null, 2));
-    
-    return NextResponse.json({ 
-      success: true, 
-      product: productData,
-      message: 'Producto creado exitosamente'
-    });
-  } catch (error) {
+    // Guardar según el entorno
+    if (isProduction && isGitHubConfigured()) {
+      const result = await updateMenuInGitHub(
+        menu, 
+        `Add: ${newProduct.name} (desde admin panel)`
+      );
+      return NextResponse.json({ 
+        success: true, 
+        product: productData,
+        message: result.message,
+        autoDeployInProgress: true
+      });
+    } else {
+      await fs.writeFile(MENU_FILE, JSON.stringify(menu, null, 2));
+      return NextResponse.json({ 
+        success: true, 
+        product: productData,
+        message: 'Producto creado exitosamente'
+      });
+    }
+  } catch (error: any) {
+    console.error('Error en POST /api/menu:', error);
     return NextResponse.json(
-      { success: false, error: 'Error al crear producto' },
+      { success: false, error: error.message || 'Error al crear producto' },
       { status: 500 }
     );
   }
@@ -127,8 +169,15 @@ export async function PUT(request: Request) {
       );
     }
     
-    const data = await fs.readFile(MENU_FILE, 'utf8');
-    const menu = JSON.parse(data);
+    // Obtener menú según el entorno
+    let menu;
+    if (isProduction && isGitHubConfigured()) {
+      const { menu: githubMenu } = await getMenuFromGitHub();
+      menu = githubMenu;
+    } else {
+      const data = await fs.readFile(MENU_FILE, 'utf8');
+      menu = JSON.parse(data);
+    }
     
     let found = false;
     
@@ -161,15 +210,29 @@ export async function PUT(request: Request) {
     }
     
     menu.lastUpdated = new Date().toISOString().split('T')[0];
-    await fs.writeFile(MENU_FILE, JSON.stringify(menu, null, 2));
     
-    return NextResponse.json({ 
-      success: true, 
-      message: 'Producto actualizado exitosamente'
-    });
-  } catch (error) {
+    // Guardar según el entorno
+    if (isProduction && isGitHubConfigured()) {
+      const result = await updateMenuInGitHub(
+        menu,
+        `Update: ${updatedProduct.name} (desde admin panel)`
+      );
+      return NextResponse.json({ 
+        success: true, 
+        message: result.message,
+        autoDeployInProgress: true
+      });
+    } else {
+      await fs.writeFile(MENU_FILE, JSON.stringify(menu, null, 2));
+      return NextResponse.json({ 
+        success: true, 
+        message: 'Producto actualizado exitosamente'
+      });
+    }
+  } catch (error: any) {
+    console.error('Error en PUT /api/menu:', error);
     return NextResponse.json(
-      { success: false, error: 'Error al actualizar producto' },
+      { success: false, error: error.message || 'Error al actualizar producto' },
       { status: 500 }
     );
   }
@@ -188,8 +251,16 @@ export async function DELETE(request: Request) {
       );
     }
     
-    const data = await fs.readFile(MENU_FILE, 'utf8');
-    const menu = JSON.parse(data);
+    // Obtener menú según el entorno
+    let menu;
+    let productName = id;
+    if (isProduction && isGitHubConfigured()) {
+      const { menu: githubMenu } = await getMenuFromGitHub();
+      menu = githubMenu;
+    } else {
+      const data = await fs.readFile(MENU_FILE, 'utf8');
+      menu = JSON.parse(data);
+    }
     
     let found = false;
     
@@ -198,6 +269,7 @@ export async function DELETE(request: Request) {
       if (Array.isArray(items)) {
         const index = items.findIndex((item: any) => item.id === id);
         if (index !== -1) {
+          productName = items[index].name || id;
           items.splice(index, 1);
           found = true;
           break;
@@ -213,15 +285,29 @@ export async function DELETE(request: Request) {
     }
     
     menu.lastUpdated = new Date().toISOString().split('T')[0];
-    await fs.writeFile(MENU_FILE, JSON.stringify(menu, null, 2));
     
-    return NextResponse.json({ 
-      success: true, 
-      message: 'Producto eliminado exitosamente'
-    });
-  } catch (error) {
+    // Guardar según el entorno
+    if (isProduction && isGitHubConfigured()) {
+      const result = await updateMenuInGitHub(
+        menu,
+        `Delete: ${productName} (desde admin panel)`
+      );
+      return NextResponse.json({ 
+        success: true, 
+        message: result.message,
+        autoDeployInProgress: true
+      });
+    } else {
+      await fs.writeFile(MENU_FILE, JSON.stringify(menu, null, 2));
+      return NextResponse.json({ 
+        success: true, 
+        message: 'Producto eliminado exitosamente'
+      });
+    }
+  } catch (error: any) {
+    console.error('Error en DELETE /api/menu:', error);
     return NextResponse.json(
-      { success: false, error: 'Error al eliminar producto' },
+      { success: false, error: error.message || 'Error al eliminar producto' },
       { status: 500 }
     );
   }

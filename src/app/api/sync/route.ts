@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { exec } from 'child_process';
 import { promisify } from 'util';
+import { updateMenuInGitHub, isProduction, isGitHubConfigured } from '@/lib/github';
+import fs from 'fs/promises';
+import path from 'path';
 
 const execAsync = promisify(exec);
 
@@ -12,17 +15,36 @@ const getGitCommand = () => {
 // POST - Hacer commit y push de los cambios
 export async function POST(request: Request) {
   try {
-    // En producción (Vercel), git no está disponible y no es necesario
-    if (process.env.VERCEL) {
-      return NextResponse.json({
-        success: false,
-        error: 'Git sync no disponible en producción',
-        hint: 'Los cambios se actualizan automáticamente al hacer push desde localhost'
-      }, { status: 400 });
-    }
-
     const { message } = await request.json();
     const commitMessage = message || 'Update: Cambios desde admin panel';
+    
+    // En producción (Vercel), usar GitHub API
+    if (isProduction) {
+      if (!isGitHubConfigured()) {
+        return NextResponse.json({
+          success: false,
+          error: 'GitHub no está configurado',
+          hint: 'Configura GITHUB_TOKEN en las variables de entorno de Vercel'
+        }, { status: 400 });
+      }
+      
+      // Leer menu.json local (última versión en memoria)
+      const MENU_FILE = path.join(process.cwd(), 'data', 'menu.json');
+      const menuContent = await fs.readFile(MENU_FILE, 'utf8');
+      const menu = JSON.parse(menuContent);
+      
+      // Actualizar en GitHub
+      const result = await updateMenuInGitHub(menu, commitMessage);
+      
+      return NextResponse.json({
+        success: true,
+        message: result.message,
+        autoDeployInProgress: true,
+        hint: 'Los cambios estarán visibles en ~2 minutos'
+      });
+    }
+
+    // En desarrollo (localhost), usar git local
     const git = getGitCommand();
     
     console.log('🔄 Iniciando git commit y push...');
