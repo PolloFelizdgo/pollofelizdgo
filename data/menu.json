@@ -1,0 +1,23 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2025-12-18",
+  "menu": {
+    "pollosFritos": [],
+    "pollosAsados": [],
+    "paquetes": [],
+    "complementos": [],
+    "bebidas": [],
+    "acompañamientos": [
+      {
+        "id": "pollo",
+        "name": "pollo",
+        "description": "pollo",
+        "price": 2000,
+        "cloudinaryPath": "pollo-feliz/test-manual/nvazvox36b6kohnedn5x",
+        "category": "Acompañamientos",
+        "bestseller": false,
+        "available": true
+      }
+    ]
+  }
+}
