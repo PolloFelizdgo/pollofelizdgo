@@ -10,11 +10,23 @@
     "acompañamientos": [
       {
         "id": "pollo",
-        "name": "pollo",
+        "name": "pollo22",
         "description": "pollo",
         "price": 2000,
-        "cloudinaryPath": "pollo-feliz/test-manual/nvazvox36b6kohnedn5x",
+        "cloudinaryPath": "/uploads/1766079245713_logo_pollo.jpg",
         "category": "Acompañamientos",
+        "bestseller": false,
+        "available": true
+      }
+    ],
+    "pollo": [
+      {
+        "id": "asada",
+        "name": "asda",
+        "description": "asda",
+        "price": 100,
+        "cloudinaryPath": "pollo-feliz/test-manual/e1itijeltxnxflcdl4qj",
+        "category": "Pollo",
         "bestseller": false,
         "available": true
       }

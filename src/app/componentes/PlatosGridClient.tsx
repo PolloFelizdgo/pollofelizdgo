@@ -9,7 +9,7 @@ const PlatosGrid = dynamic(() => import("./PlatosGrid"), {
       <div className="gap-2 grid grid-cols-2 sm:grid-cols-4">
         {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
           <div key={i} className="bg-white rounded-lg shadow-sm overflow-hidden animate-pulse">
-            <div className="h-[140px] bg-gray-200" />
+            <div className="h-35 bg-gray-200" />
             <div className="p-3 space-y-2">
               <div className="h-4 bg-gray-200 rounded w-3/4" />
               <div className="h-4 bg-gray-200 rounded w-1/4" />
