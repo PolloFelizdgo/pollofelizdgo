@@ -81,7 +81,7 @@ export default function HomeClient() {
               <div className="relative w-full max-w-[90%] sm:max-w-[600px] md:max-w-[700px] lg:max-w-[800px] mx-auto">
                 <div className="relative w-full" style={{ aspectRatio: '4/3' }}>
                   <Image
-                    src="/logo-pollo-feliz.jpeg"
+                    src="/logo-pollo-feliz.png"
                     alt="Pollo Feliz - Sabor para Sonreír"
                     fill
                     priority
