@@ -78,16 +78,18 @@ export default function HomeClient() {
 
             <h1 className="mb-12 leading-none animate-fade-in">
               {/* Logo oficial de Pollo Feliz - Imagen responsiva */}
-              <div className="relative w-full max-w-[90%] sm:max-w-[600px] md:max-w-[700px] lg:max-w-[800px] mx-auto">
-                <div className="relative w-full" style={{ aspectRatio: '4/3' }}>
-                  <Image
-                    src="/logo-pollo-feliz.png"
-                    alt="Pollo Feliz - Sabor para Sonreír"
-                    fill
-                    priority
-                    className="object-contain drop-shadow-2xl"
-                    sizes="(max-width: 640px) 90vw, (max-width: 768px) 600px, (max-width: 1024px) 700px, 800px"
-                  />
+              <div className="flex justify-center items-center w-full px-4">
+                <div className="relative w-full max-w-[500px] sm:max-w-[600px] md:max-w-[700px]">
+                  <div className="relative w-full" style={{ aspectRatio: '16/5' }}>
+                    <Image
+                      src="/logo-pollo-feliz.png"
+                      alt="Pollo Feliz - Sabor para Sonreír"
+                      fill
+                      priority
+                      className="object-contain drop-shadow-2xl"
+                      sizes="(max-width: 640px) 500px, (max-width: 768px) 600px, 700px"
+                    />
+                  </div>
                 </div>
               </div>
               
