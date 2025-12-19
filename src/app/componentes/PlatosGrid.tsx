@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback, useEffect } from "react";
 import { PLATOS } from "../data/platos";
 import Image from "next/image";
 import { CLOUDINARY_CONFIG } from "@/lib/cloudinary-images";
@@ -11,7 +11,7 @@ type Product = {
   id: string;
   name: string;
   description?: string;
-  price: number;
+  price: number | null;
   cloudinaryPath: string;
   category: string;
   available: boolean;
@@ -21,39 +21,18 @@ type Product = {
 function PlatosGrid() {
   const [modalImage, setModalImage] = useState<string | null>(null);
   const [modalTitle, setModalTitle] = useState<string | null>(null);
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  // Cargar productos desde API
-  useEffect(() => {
-    const loadProducts = async () => {
-      try {
-        const response = await fetch('/api/menu');
-        if (!response.ok) throw new Error('Error al cargar menú');
-        const data = await response.json();
-        
-        // Combinar todos los productos de todas las categorías
-        const allProducts: Product[] = [];
-        if (data.menu) {
-          Object.values(data.menu).forEach((category: any) => {
-            if (Array.isArray(category)) {
-              allProducts.push(...category.filter((p: Product) => p.available));
-            }
-          });
-        }
-        
-        setProducts(allProducts);
-      } catch (error) {
-        console.error('Error cargando productos:', error);
-        // Si falla la API, no mostrar nada (ya no usar PLATOS estáticos)
-        setProducts([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-    
-    loadProducts();
-  }, []);
+  const [products] = useState<Product[]>(() =>
+    PLATOS.map((p, idx) => ({
+      id: p.name || `plato-${idx}`,
+      name: p.name,
+      description: p.desc,
+      price: p.price ?? null,
+      cloudinaryPath: p.imageBase,
+      category: p.category || 'Otros',
+      available: true,
+      bestseller: p.bestseller,
+    }))
+  );
 
   const closeModal = useCallback(() => {
     setModalImage(null);
@@ -76,24 +55,12 @@ function PlatosGrid() {
   // Mostrar solo los primeros 8 platos para mejorar rendimiento inicial
   const visiblePlatos = useMemo(() => products.slice(0, 8), [products]);
 
-  if (loading) {
-    return (
-      <section className="w-full px-4 md:px-8 py-8 bg-white">
-        <h2 className="text-2xl md:text-3xl font-semibold mb-6 text-slate-800">Nuestros Platos</h2>
-        <div className="gap-2 grid grid-cols-2 sm:grid-cols-4">
-          {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-            <div key={i} className="bg-white rounded-lg shadow-sm overflow-hidden animate-pulse">
-              <div className="h-[140px] bg-gray-200" />
-              <div className="p-3 space-y-2">
-                <div className="h-4 bg-gray-200 rounded w-3/4" />
-                <div className="h-4 bg-gray-200 rounded w-1/4" />
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-    );
-  }
+  const buildImageUrl = useCallback((path: string) => {
+    if (!path) return '';
+    if (path.startsWith('http://') || path.startsWith('https://')) return path;
+    if (path.startsWith('/')) return path;
+    return `https://res.cloudinary.com/${CLOUDINARY_CONFIG.cloudName}/image/upload/c_fill,g_auto,w_400,h_300,f_auto,q_auto/${path}`;
+  }, []);
 
   if (visiblePlatos.length === 0) {
     return (
@@ -117,9 +84,9 @@ function PlatosGrid() {
               className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer overflow-hidden"
               onClick={() => openModal(p.cloudinaryPath, p.name)}
             >
-              <div className="overflow-hidden relative h-[140px] w-full">
+              <div className="overflow-hidden relative h-35 w-full">
                 <Image
-                  src={`https://res.cloudinary.com/${CLOUDINARY_CONFIG.cloudName}/image/upload/c_fill,g_auto,w_400,h_300,f_auto,q_auto/${p.cloudinaryPath}`}
+                  src={buildImageUrl(p.cloudinaryPath)}
                   alt={p.name}
                   fill
                   sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
@@ -128,9 +95,25 @@ function PlatosGrid() {
                   unoptimized
                 />
               </div>
-              <div className="p-3 flex justify-between items-center text-sm">
-                <b className="text-gray-800">{p.name}</b>
-                <p className="text-gray-500">${p.price.toFixed(2)}</p>
+              <div className="p-3 space-y-2">
+                <div className="flex justify-between items-start gap-2 text-sm">
+                  <b className="text-gray-800 leading-tight">{p.name}</b>
+                  <p className="text-gray-600 font-semibold whitespace-nowrap">
+                    {p.price != null ? `$${p.price.toFixed(2)}` : '—'}
+                  </p>
+                </div>
+                {p.description ? (
+                  <p className="text-xs text-gray-500 line-clamp-2 leading-snug">{p.description}</p>
+                ) : null}
+                <button
+                  type="button"
+                  onClick={() => openModal(p.cloudinaryPath, p.name)}
+                  className="mt-1 w-full inline-flex items-center justify-center gap-2 text-sm font-semibold text-white bg-red-600 hover:bg-red-700 rounded-md px-3 py-2 transition-colors"
+                  aria-label={`Ver ${p.name}`}
+                >
+                  Ver
+                  <span aria-hidden>👀</span>
+                </button>
               </div>
             </div>
           );
@@ -152,7 +135,7 @@ function PlatosGrid() {
             </div>
             <div className="relative w-full h-[60vh] md:h-[70vh] bg-white">
               <Image
-                src={`https://res.cloudinary.com/${CLOUDINARY_CONFIG.cloudName}/image/upload/c_fit,w_1200,h_900,f_auto,q_auto/${modalImage}`}
+                src={buildImageUrl(modalImage)}
                 alt={modalTitle || "imagen"}
                 fill
                 sizes="(max-width: 768px) 100vw, 80vw"

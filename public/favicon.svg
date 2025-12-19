@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <style>
+      .favicon-bg { fill: #EF4444; }
+      .favicon-text { fill: #FCD34D; font-weight: 900; }
+    </style>
+  </defs>
+  
+  <!-- Fondo circular rojo -->
+  <circle cx="100" cy="100" r="95" class="favicon-bg"/>
+  
+  <!-- Letra P amarilla representativa -->
+  <g class="favicon-text">
+    <text x="50" y="140" font-family="Impact, Arial Black, sans-serif" font-size="140" font-weight="900">P</text>
+  </g>
+  
+  <!-- Símbolo registrado pequeño -->
+  <circle cx="155" cy="45" r="12" fill="#FCD34D"/>
+  <text x="155" y="53" font-size="16" font-weight="900" fill="#EF4444" text-anchor="middle">®</text>
+</svg>

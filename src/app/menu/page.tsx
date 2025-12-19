@@ -3,7 +3,6 @@ import React, { useEffect, useState, useMemo, useCallback } from "react";
 import Section from "../componentes/Section";
 import { PLATOS } from "../data/platos";
 import Image from "next/image";
-import { CLOUDINARY_CONFIG } from "@/lib/cloudinary-images";
 
 /*
   Página: /menu
@@ -19,43 +18,8 @@ export default function MenuPage() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [minPrice, setMinPrice] = useState<number | ''>('');
   const [maxPrice, setMaxPrice] = useState<number | ''>('');
-  const [products, setProducts] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  // Cargar productos desde la API
-  useEffect(() => {
-    const loadProducts = async () => {
-      try {
-        const res = await fetch('/api/menu', { cache: 'no-store' });
-        const data = await res.json();
-        if (data.success && data.products.length > 0) {
-          // Convertir formato API a formato PLATOS
-          const formattedProducts = data.products
-            .filter((p: any) => p.available !== false)
-            .map((p: any) => ({
-              id: p.id,
-              name: p.name,
-              desc: p.description || '',
-              price: p.price ? parseFloat(p.price) : null,
-              image: p.cloudinaryPath || '',
-              category: p.category || 'Otros',
-              bestseller: p.bestseller || false
-            }));
-          setProducts(formattedProducts);
-        } else {
-          // Fallback a datos estáticos si API falla o está vacía
-          setProducts(PLATOS);
-        }
-      } catch (error) {
-        console.error('Error cargando productos:', error);
-        setProducts(PLATOS); // Fallback a datos estáticos
-      } finally {
-        setLoading(false);
-      }
-    };
-    
-    loadProducts();
-  }, []);
+  const [products] = useState<any[]>(PLATOS);
+  const [loading] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -121,7 +85,7 @@ export default function MenuPage() {
   return (
     <main className="relative overflow-hidden">
       {/* Fondo decorativo animado - igual que la página de inicio */}
-      <div className="fixed inset-0 -z-10 bg-gradient-to-br from-orange-50 via-yellow-50 to-red-50">
+      <div className="fixed inset-0 -z-10 bg-linear-to-br from-orange-50 via-yellow-50 to-red-50">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(251,146,60,0.1)_0%,transparent_50%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(234,88,12,0.1)_0%,transparent_50%)]" />
         <div className="absolute top-20 left-10 w-72 h-72 bg-orange-200/20 rounded-full blur-3xl animate-pulse" />
@@ -198,13 +162,12 @@ export default function MenuPage() {
                 <div className="relative w-full h-48 bg-slate-100 overflow-hidden">
                   {/* Image: using Cloudinary */}
                   <Image 
-                    src={`https://res.cloudinary.com/${CLOUDINARY_CONFIG.cloudName}/image/upload/c_fill,g_auto,w_600,h_450,f_auto,q_auto/${p.imageBase}`}
+                    src={p.imageBase}
                     alt={p.name} 
                     fill
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     className="object-cover transition-transform duration-300 group-hover:scale-110"
                     loading="lazy"
-                    unoptimized
                   />
 
                   {/* price badge (SVG chip) */}
@@ -256,12 +219,11 @@ export default function MenuPage() {
               </div>
               <div className="relative w-full h-[60vh] bg-slate-100">
                 <Image 
-                  src={`https://res.cloudinary.com/${CLOUDINARY_CONFIG.cloudName}/image/upload/c_fit,w_1200,h_900,f_auto,q_auto/${modal.src}`}
+                  src={modal.src}
                   alt={modal.title || "imagen"} 
                   fill
                   sizes="(max-width: 768px) 100vw, 80vw"
                   className="object-contain"
-                  unoptimized
                 />
               </div>
             </div>

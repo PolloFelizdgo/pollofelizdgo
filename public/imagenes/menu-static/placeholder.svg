@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#facc15"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" fill="#fff7ed"/>
+  <rect x="10" y="10" width="380" height="280" rx="24" fill="url(#g)" opacity="0.18"/>
+  <g fill="#c2410c" font-family="Arial, Helvetica, sans-serif" text-anchor="middle">
+    <text x="200" y="140" font-size="42" font-weight="700">Pollo Feliz</text>
+    <text x="200" y="185" font-size="22" font-weight="600">Imagen pendiente</text>
+  </g>
+  <circle cx="320" cy="70" r="26" fill="#fb923c" opacity="0.8"/>
+  <circle cx="90" cy="230" r="18" fill="#facc15" opacity="0.8"/>
+</svg>

@@ -11,12 +11,22 @@ const nextConfig: NextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     minimumCacheTTL: 86400, // 24 horas
     unoptimized: false,
-    // Cloudinary remote patterns
     remotePatterns: [
       {
         protocol: 'https',
         hostname: 'res.cloudinary.com',
         pathname: '/dw55kbkmn/**',
+      },
+      // Se permiten imágenes locales servidas desde /imagenes o /uploads (almacenadas en /public)
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        pathname: '/uploads/**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        pathname: '/imagenes/**',
       },
     ],
     dangerouslyAllowSVG: true,

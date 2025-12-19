@@ -8,8 +8,8 @@ interface Product {
   id: string;
   name: string;
   description?: string;
-  price?: number;
-  cloudinaryPath: string;
+  price?: number | null;
+  cloudinaryPath: string; // ahora puede ser ruta local en /uploads
   category: string;
   categoryKey?: string;
   bestseller?: boolean;
@@ -17,6 +17,18 @@ interface Product {
 }
 
 export default function AdminPanel() {
+  const sanitizePrice = (value: any): number | null => {
+    const num = Number(value);
+    return Number.isFinite(num) ? num : null;
+  };
+
+  const normalizeImage = (path: string | undefined | null) => {
+    if (!path) return '';
+    if (path.startsWith('http://') || path.startsWith('https://')) return path;
+    if (path.startsWith('/')) return path;
+    return `/uploads/${path}`;
+  };
+
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState("");
@@ -32,7 +44,7 @@ export default function AdminPanel() {
     id: "",
     name: "",
     description: "",
-    price: 0,
+    price: null,
     cloudinaryPath: "",
     category: "Promoción",
     categoryKey: "promociones",
@@ -131,54 +143,28 @@ export default function AdminPanel() {
     setUploadingImage(true);
     const formDataUpload = new FormData();
     formDataUpload.append('file', file);
-    formDataUpload.append('folder', 'pollo-feliz/menu');
 
-    console.log('📤 Iniciando upload:', file.name, `(${(file.size / 1024 / 1024).toFixed(2)}MB)`);
-    console.log('🔍 Usando endpoint de prueba: /api/test-upload');
+    console.log('📤 Iniciando upload local:', file.name, `(${(file.size / 1024 / 1024).toFixed(2)}MB)`);
 
     try {
-      const res = await fetch('/api/test-upload', {
+      const res = await fetch('/api/upload', {
         method: 'POST',
         body: formDataUpload
       });
       
-      console.log('📥 Respuesta del servidor:', res.status, res.statusText);
-      
-      if (!res.ok) {
-        console.error('❌ Respuesta no OK:', res.status);
-      }
-      
       const data = await res.json();
-      console.log('📦 Data recibida:', data);
-      
       if (data.success) {
         setFormData(prev => ({ ...prev, cloudinaryPath: data.cloudinaryPath }));
-        setMessage({ type: 'success', text: '✅ Imagen subida exitosamente' });
-        console.log('✅ Imagen guardada en state:', data.cloudinaryPath);
-        // Limpiar el input para permitir subir la misma imagen de nuevo si se borra
+        setMessage({ type: 'success', text: '✅ Imagen subida localmente (public/uploads)' });
         e.target.value = '';
       } else {
-        // Mostrar error detallado
         const errorMsg = data.details 
           ? `${data.error}: ${data.details}` 
           : data.error || 'Error al subir imagen';
         setMessage({ type: 'error', text: `❌ ${errorMsg}` });
-        
-        // Log para debugging
-        console.error('❌ Error del servidor:', data);
       }
     } catch (error: any) {
-      console.error('❌ Error capturado:', error);
-      console.error('Tipo de error:', error.name);
-      console.error('Mensaje:', error.message);
-      
-      let errorText = 'Error desconocido';
-      if (error.name === 'TypeError' && error.message.includes('fetch')) {
-        errorText = 'No se puede conectar al servidor. ¿Está corriendo en localhost:3000?';
-      } else if (error.message) {
-        errorText = error.message;
-      }
-      
+      const errorText = error?.message || 'Error desconocido al subir';
       setMessage({ type: 'error', text: `❌ ${errorText}` });
     } finally {
       setUploadingImage(false);
@@ -246,7 +232,10 @@ export default function AdminPanel() {
 
   const handleEdit = (product: Product) => {
     setEditingProduct(product);
-    setFormData(product);
+    setFormData({
+      ...product,
+      price: sanitizePrice(product.price),
+    });
     setIsCreating(true);
   };
 
@@ -257,7 +246,7 @@ export default function AdminPanel() {
       id: "",
       name: "",
       description: "",
-      price: 0,
+      price: null,
       cloudinaryPath: "",
       category: "Promoción",
       categoryKey: "promociones",
@@ -302,7 +291,7 @@ export default function AdminPanel() {
   // Login screen
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-100 via-yellow-50 to-red-100">
+      <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-orange-100 via-yellow-50 to-red-100">
         <div className="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md">
           <div className="text-center mb-6">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">🍗 Panel Admin</h1>
@@ -449,8 +438,12 @@ export default function AdminPanel() {
                 <label className="block text-sm font-medium text-gray-700 mb-1">Precio (MXN)</label>
                 <input
                   type="number"
-                  value={formData.price}
-                  onChange={(e) => setFormData(prev => ({ ...prev, price: parseFloat(e.target.value) }))}
+                  value={formData.price ?? ''}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    const parsed = val === '' ? null : Number(val);
+                    setFormData(prev => ({ ...prev, price: Number.isFinite(parsed as number) ? parsed : null }));
+                  }}
                   className="w-full px-3 py-2 border rounded-lg"
                   placeholder="99.00"
                   step="0.01"
@@ -495,7 +488,7 @@ export default function AdminPanel() {
                     <div className="space-y-3">
                       <div className="relative w-48 h-36 mx-auto">
                         <Image
-                          src={`https://res.cloudinary.com/dw55kbkmn/image/upload/c_fill,w_400,h_300/${formData.cloudinaryPath}`}
+                          src={normalizeImage(formData.cloudinaryPath)}
                           alt="Preview"
                           fill
                           className="object-cover rounded-lg"
@@ -596,12 +589,16 @@ export default function AdminPanel() {
             {products.map((product) => (
               <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
                 <div className="relative h-48 bg-gray-100">
-                  <Image
-                    src={`https://res.cloudinary.com/dw55kbkmn/image/upload/c_fill,w_400,h_300/${product.cloudinaryPath}`}
-                    alt={product.name}
-                    fill
-                    className="object-cover"
-                  />
+                    {product.cloudinaryPath ? (
+                      <Image
+                        src={normalizeImage(product.cloudinaryPath)}
+                        alt={product.name}
+                        fill
+                        className="object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-gray-400 text-sm">Sin imagen</div>
+                    )}
                   <div className="absolute top-2 right-2 flex gap-1">
                     {product.bestseller && (
                       <span className="bg-yellow-500 text-xs px-2 py-1 rounded">⭐ Best</span>

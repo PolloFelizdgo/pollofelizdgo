@@ -1,0 +1,7 @@
+cms/
+db/
+scripts/
+docs/
+.env.local
+.env
+pnpm-lock.yaml

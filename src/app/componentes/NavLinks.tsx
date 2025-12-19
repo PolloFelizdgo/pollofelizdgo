@@ -33,6 +33,11 @@ export default function NavLinks({ onClick }: { onClick?: () => void }) {
           Bolsa de Trabajo
         </Link>
       </li>
+      <li>
+        <a href="https://facturacion.galasistemas.com/" target="_blank" rel="noopener noreferrer" className={linkCls} onClick={onClick}>
+          Facturación
+        </a>
+      </li>
     </ul>
   );
 }

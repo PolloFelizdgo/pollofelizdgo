@@ -33,6 +33,12 @@ export const metadata: Metadata = {
   authors: [{ name: "Pollo Feliz Durango" }],
   creator: "Pollo Feliz Durango",
   publisher: "Pollo Feliz Durango",
+  icons: {
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/logo-pollo-feliz.svg", type: "image/svg+xml" },
+    ],
+  },
   robots: {
     index: true,
     follow: true,

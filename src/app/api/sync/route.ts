@@ -44,6 +44,13 @@ export async function POST(request: Request) {
       });
     }
 
+    // En desarrollo (localhost), omitir git para evitar errores en entornos sin git configurado
+    return NextResponse.json({
+      success: true,
+      skipped: true,
+      message: 'Modo desarrollo: cambios guardados en data/menu.json. Haz git commit/push manual si lo necesitas.'
+    });
+
     // En desarrollo (localhost), usar git local
     const git = getGitCommand();
     
@@ -54,11 +61,16 @@ export async function POST(request: Request) {
     // Opciones de ejecución con PATH extendido
     const execOptions = {
       cwd: process.cwd(),
+      maxBuffer: 10 * 1024 * 1024, // 10MB para evitar stdout maxBuffer
       env: {
         ...process.env,
-        PATH: `${process.env.PATH};C:\\Program Files\\Git\\cmd;C:\\Program Files\\Git\\bin`
+        PATH: `${process.env.PATH};C:\\Program Files\\Git\\cmd;C:\\Program Files\\Git\\bin`,
+        GIT_AUTHOR_NAME: process.env.GIT_AUTHOR_NAME || 'Admin Panel',
+        GIT_AUTHOR_EMAIL: process.env.GIT_AUTHOR_EMAIL || 'admin@example.com',
+        GIT_COMMITTER_NAME: process.env.GIT_COMMITTER_NAME || 'Admin Panel',
+        GIT_COMMITTER_EMAIL: process.env.GIT_COMMITTER_EMAIL || 'admin@example.com',
       }
-    };
+    } as const;
     
     // Git add
     const { stdout: addOutput } = await execAsync(`${git} add data/menu.json`, execOptions);
