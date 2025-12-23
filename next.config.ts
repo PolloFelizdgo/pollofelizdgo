@@ -17,6 +17,12 @@ const nextConfig: NextConfig = {
         hostname: 'res.cloudinary.com',
         pathname: '/dw55kbkmn/**',
       },
+      // Vercel Blob Storage
+      {
+        protocol: 'https',
+        hostname: 'ji4rgwutdaqrt9bs.public.blob.vercel-storage.com',
+        pathname: '/**',
+      },
       // Se permiten imágenes locales servidas desde /imagenes o /uploads (almacenadas en /public)
       {
         protocol: 'http',
