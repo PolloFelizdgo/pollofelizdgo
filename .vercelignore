@@ -5,11 +5,19 @@ docs/
 .env.local
 .env
 pnpm-lock.yaml
-public/imagenes/menu-static/
+# Excluir todas las imágenes grandes de public/imagenes excepto las esenciales
+public/imagenes/*.png
 public/imagenes/*.jpeg
 public/imagenes/*.jpg
+public/imagenes/menu-static/
+public/imagenes/platillos/
 public/uploads/
 public/slider/
+public/videos/
+# Archivos Python
 *.pyc
 __pycache__/
 remove_bg.py
+# Otros archivos temporales
+*.log
+.DS_Store
